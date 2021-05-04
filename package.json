@@ -3,13 +3,18 @@
   "author": "ncaq <ncaq@ncaq.net>",
   "license": "MIT",
   "scripts": {
+    "build": "esbuild --bundle --outdir=dist --target=firefox78 --minify src/background/main.ts src/content/main.ts",
     "fix": "FORCE_COLOR=1 run-p --print-label fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
     "lint": "FORCE_COLOR=1 run-p --print-label lint:*",
     "lint:eslint": "eslint --ignore-path .gitignore --cache --ext .ts --ext .tsx .",
     "lint:prettier": "prettier --ignore-path .gitignore --check **/*.ts",
-    "lint:tsc": "tsc --noEmit"
+    "lint:tsc": "tsc --noEmit",
+    "lint:web-ext": "web-ext lint",
+    "package": "yarn build && web-ext build --config web-ext-config.js",
+    "start": "web-ext run --firefox-profile google-search-title-to-qualified",
+    "watch": "esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^13.0.0",
@@ -25,7 +30,8 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "web-ext": "^6.1.0"
   },
   "dependencies": {
     "node-fetch": "^2.6.1"
