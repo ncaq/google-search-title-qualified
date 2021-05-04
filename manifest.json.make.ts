@@ -4,7 +4,10 @@ import fs from "fs/promises";
 async function main(): Promise<void> {
   const response = await fetch("https://www.google.com/supported_domains");
   const text = await response.text();
-  const urls = text.split("\n").map((domain) => `https://www${domain}/search*`);
+  const urls = text
+    .split("\n")
+    .filter((domain) => domain.includes("google"))
+    .map((domain) => `https://www${domain}/search*`);
   return fs.writeFile(
     "manifest.json",
     JSON.stringify(

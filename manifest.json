@@ -201,8 +201,7 @@
         "https://www.google.co.za/search*",
         "https://www.google.co.zm/search*",
         "https://www.google.co.zw/search*",
-        "https://www.google.cat/search*",
-        "https://www/search*"
+        "https://www.google.cat/search*"
       ],
       "js": [
         "dist/content/main.js"
