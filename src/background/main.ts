@@ -25,6 +25,10 @@ async function listener(message: unknown): Promise<string | undefined> {
   if (typeof message !== "string") {
     throw new Error(`message is not URL: ${JSON.stringify(message)}`);
   }
+  // PDFは読み込まない
+  if (message.endsWith(".pdf")) {
+    return undefined;
+  }
   const response = await fetch(message, {
     // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
     mode: "no-cors",
