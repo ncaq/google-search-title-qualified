@@ -14,7 +14,8 @@ function selectLinkElements(): Element[] {
           // TypeScriptの型システムを説得
           typeof href === "string" &&
           // Googleの内部リンクを除外
-          href !== "#" &&
+          !href.startsWith("#") &&
+          !href.startsWith("/") &&
           // ウェブキャッシュへのリンクを除外
           !href.startsWith("https://webcache.googleusercontent.com/")
         );
@@ -72,7 +73,11 @@ async function replaceLinkTitles(links: Element[]): Promise<void[]> {
     links.map(async (link) =>
       replaceLinkTitle(link).catch((err) => {
         // eslint-disable-next-line no-console
-        console.error(err);
+        console.error(
+          `replaceLinkTitles: err: ${JSON.stringify(
+            err
+          )}, link: ${JSON.stringify(link)}`
+        );
       })
     )
   );
