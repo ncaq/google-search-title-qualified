@@ -1,13 +1,18 @@
 import fetch from "node-fetch";
 import fs from "fs/promises";
 
-async function main(): Promise<void> {
+/** Googleの公式情報から検索ドメインを取ってきます。 */
+async function selectGoogleSearchUrls(): Promise<string[]> {
   const response = await fetch("https://www.google.com/supported_domains");
   const text = await response.text();
-  const urls = text
+  return text
     .split("\n")
     .filter((domain) => domain.includes("google"))
     .map((domain) => `https://www${domain}/search*`);
+}
+
+/** manifest.jsonを生成して書き込みます。 */
+async function writeManifestJson(): Promise<void> {
   return fs.writeFile(
     "manifest.json",
     JSON.stringify(
@@ -26,7 +31,7 @@ async function main(): Promise<void> {
 
         content_scripts: [
           {
-            matches: urls,
+            matches: await selectGoogleSearchUrls(),
             js: ["dist/content/main.js"],
           },
         ],
@@ -41,8 +46,9 @@ async function main(): Promise<void> {
   );
 }
 
+// ts-nodeとかで実行させます。
 if (require.main === module) {
-  main().catch((e) => {
+  writeManifestJson().catch((e) => {
     throw e;
   });
 }
