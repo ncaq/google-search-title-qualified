@@ -12,7 +12,7 @@
     "lint:prettier": "prettier --ignore-path .gitignore --check **/*.ts",
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint",
-    "package": "yarn build && web-ext build --config web-ext-config.js",
+    "package": "rm -r dist/ && yarn build && web-ext build --config web-ext-config.js",
     "start": "web-ext run --firefox-profile google-search-title-to-qualified",
     "watch": "esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
   },
@@ -34,6 +34,7 @@
     "web-ext": "^6.1.0"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "webextension-polyfill-ts": "^0.25.0"
   }
 }

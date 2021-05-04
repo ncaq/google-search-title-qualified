@@ -30,7 +30,7 @@ async function main(): Promise<void> {
             js: ["dist/content/main.js"],
           },
         ],
-        permissions: [],
+        permissions: ["<all_urls>"],
         background: {
           scripts: ["dist/background/main.js"],
         },

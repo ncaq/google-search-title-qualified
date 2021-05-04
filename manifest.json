@@ -208,7 +208,9 @@
       ]
     }
   ],
-  "permissions": [],
+  "permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "scripts": [
       "dist/background/main.js"
