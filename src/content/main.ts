@@ -45,6 +45,11 @@ async function replace(url: string, link: Element): Promise<void> {
   if (titleElement == null) {
     throw new Error("titleElement is null");
   }
+  const oldTitle = titleElement.textContent || "";
+  if (newTitle.length < oldTitle.length) {
+    // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません
+    return;
+  }
   titleElement.textContent = newTitle;
 }
 
