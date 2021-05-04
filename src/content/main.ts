@@ -30,13 +30,17 @@ function selectLinkElements(): Element[] {
 async function replace(url: string, link: Element): Promise<void> {
   // backgroundから未省略のタイトルを取得します
   const newTitle: unknown = await browser.runtime.sendMessage(url);
-  // タイトルがstringではない場合プログラミングミスなので例外を投げます
+  // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
+  if (newTitle == null) {
+    return;
+  }
+  // タイトルがstringではない場合プログラミングミスなので例外を投げます。
   if (typeof newTitle !== "string") {
     throw new Error(
       `newTitle !== "string": newTitle: ${JSON.stringify(newTitle)}`
     );
   }
-  // 該当の検索結果からタイトル部分を表示するDOMを取得します
+  // 該当の検索結果からタイトル部分を表示するDOMを取得します。
   const titleElement = link.querySelector(".LC20lb");
   if (titleElement == null) {
     throw new Error("titleElement is null");
