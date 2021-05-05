@@ -7,7 +7,11 @@ Google will omit the title of the web page. With this add-on, the original title
 
 [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
+## before
+
 ![before](docs/before.png)
+
+## after
 
 ![after](docs/after.png)
 
