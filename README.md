@@ -1,9 +1,11 @@
 [![CircleCI](https://circleci.com/gh/ncaq/google-search-title-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-qualified)
-[![Mozilla Add-on](https://img.shields.io/amo/users/google-search-title-qualified.svg)](https://addons.mozilla.org/ja/firefox/addon/google-search-title-qualified/)
+[![Mozilla Add-on](https://img.shields.io/amo/users/google-search-title-qualified.svg)](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
 # google-search-title-qualified
 
 Google will omit the title of the web page. With this add-on, the original title is used as much as possible.
+
+[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
 ![before](docs/before.png)
 
