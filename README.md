@@ -1,6 +1,6 @@
-# google-search-title-to-qualified
-
 [![CircleCI](https://circleci.com/gh/ncaq/google-search-title-to-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-to-qualified)
+
+# google-search-title-to-qualified
 
 Google will omit the title of the web page. With this add-on, the original title is used as much as possible.
 
@@ -28,4 +28,5 @@ WikipediaやArchWikiのタイトルを意味不明に変換する事案がよく
 
 そこで、
 検索結果ページを書き換えて、
-なるべくサイトオリジナルのタイトルを反映させることにしました。
+なるべくサイトオリジナルのタイトルを反映させるブラウザ拡張を作ることにしました。
+FirefoxとChromeに対応します。
