@@ -18,13 +18,13 @@ async function writeManifestJson(): Promise<void> {
     JSON.stringify(
       {
         manifest_version: 2,
-        name: "google-search-title-to-qualified",
+        name: "google-search-title-qualified",
         version: "0.1.0",
         description:
           "Google will omit the title of the web page. With this add-on, the original title is used as much as possible.",
         applications: {
           gecko: {
-            id: "google-search-title-to-qualified@ncaq.net",
+            id: "google-search-title-qualified@ncaq.net",
             strict_min_version: "78.0",
           },
         },

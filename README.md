@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/ncaq/google-search-title-to-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-to-qualified)
+[![CircleCI](https://circleci.com/gh/ncaq/google-search-title-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-qualified)
 
-# google-search-title-to-qualified
+# google-search-title-qualified
 
 Google will omit the title of the web page. With this add-on, the original title is used as much as possible.
 
