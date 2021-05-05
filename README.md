@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/ncaq/google-search-title-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-qualified)
+[![Mozilla Add-on](https://img.shields.io/amo/users/google-search-title-qualified.svg)](https://addons.mozilla.org/ja/firefox/addon/google-search-title-qualified/)
 
 # google-search-title-qualified
 
