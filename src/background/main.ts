@@ -4,10 +4,12 @@ import { browser } from "webextension-polyfill-ts";
  * 雑に文字コード推定を行います。
  * 本当はブラウザの自動判定機能が使いたいです、誰か方法を教えてください。
  */
-function detectIsUtf8(d: Document): boolean {
+function detectIsUtf8(response: Response, d: Document): boolean {
   const re = /UTF[-_]8/i;
-  // HTML5
   return (
+    // HTTP header
+    re.test(response.headers.get("content-type") || "") ||
+    // HTML5
     re.test(d.querySelector("meta[charset]")?.getAttribute("charset") || "") ||
     // HTML4
     re.test(
@@ -15,8 +17,8 @@ function detectIsUtf8(d: Document): boolean {
         .querySelector('meta[http-equiv="Content-Type"]')
         ?.getAttribute("content") || ""
     ) ||
-    // charsetが存在しない場合、規格上UTF-8になります。
-    true
+    // charsetが存在しない場合、規格上UTF-8になりますが、規格を守ってるサイトも多いと思うので、安全側に倒してfalseをfallbackにします。
+    false
   );
 }
 
@@ -47,7 +49,7 @@ async function listener(message: unknown): Promise<string | undefined> {
   const text = await response.text();
   const dom = new DOMParser().parseFromString(text, "text/html");
   // UTF-8でない場合取得を諦める
-  if (detectIsUtf8(dom)) {
+  if (detectIsUtf8(response, dom)) {
     return dom.querySelector("title")?.textContent || undefined;
   }
   return undefined;
