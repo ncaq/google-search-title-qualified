@@ -5,7 +5,7 @@ import { browser } from "webextension-polyfill-ts";
  * 本当はブラウザの自動判定機能が使いたいです、誰か方法を教えてください。
  */
 function detectIsUtf8(d: Document): boolean {
-  const re = /(UTF-8|UTF_8)/i;
+  const re = /UTF[-_]8/i;
   // HTML5
   return (
     re.test(d.querySelector("meta[charset]")?.getAttribute("charset") || "") ||
