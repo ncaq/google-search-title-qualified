@@ -7,6 +7,8 @@ Google will omit the title of the web page. With this add-on, the original title
 
 [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
+For Chrome is under review.
+
 # Japanese
 
 Googleの検索結果のwebページタイトルは、
