@@ -15,7 +15,8 @@ function detectIsUtf8(d: Document): boolean {
         .querySelector('meta[http-equiv="Content-Type"]')
         ?.getAttribute("content") || ""
     ) ||
-    false
+    // charsetが存在しない場合、規格上UTF-8になります。
+    true
   );
 }
 
