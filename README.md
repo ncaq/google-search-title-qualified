@@ -7,14 +7,6 @@ Google will omit the title of the web page. With this add-on, the original title
 
 [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
-## before
-
-![before](docs/before.png)
-
-## after
-
-![after](docs/after.png)
-
 # Japanese
 
 Googleの検索結果のwebページタイトルは、
@@ -37,3 +29,13 @@ WikipediaやArchWikiのタイトルを意味不明に変換する事案がよく
 検索結果ページを書き換えて、
 なるべくサイトオリジナルのタイトルを反映させるブラウザ拡張を作ることにしました。
 FirefoxとChromeに対応します。
+
+# screenshot
+
+## before
+
+![before](docs/before.png)
+
+## after
+
+![after](docs/after.png)
