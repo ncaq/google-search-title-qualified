@@ -35,16 +35,16 @@ async function writeManifestJson(): Promise<void> {
           "128": "icon-128.png",
         },
 
-        content_scripts: [
-          {
-            matches: await selectGoogleSearchUrls(),
-            js: ["dist/content/main.js"],
-          },
-        ],
         permissions: ["<all_urls>"],
         background: {
           scripts: ["dist/background/main.js"],
         },
+        content_scripts: [
+          {
+            js: ["dist/content/main.js"],
+            matches: await selectGoogleSearchUrls(),
+          },
+        ],
       },
       null,
       2
