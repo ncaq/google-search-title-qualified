@@ -22,6 +22,8 @@ function detectIsUtf8(response: Response, d: Document): boolean {
   );
 }
 
+const domParser = new DOMParser();
+
 /** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
 async function listener(message: unknown): Promise<string | undefined> {
   // メッセージ内容がおかしい場合はエラー
@@ -47,7 +49,7 @@ async function listener(message: unknown): Promise<string | undefined> {
   }
   // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます
   const text = await response.text();
-  const dom = new DOMParser().parseFromString(text, "text/html");
+  const dom = domParser.parseFromString(text, "text/html");
   // UTF-8でない場合取得を諦める
   if (detectIsUtf8(response, dom)) {
     return dom.querySelector("title")?.textContent || undefined;
