@@ -46,7 +46,8 @@ async function replace(url: string, link: Element): Promise<void> {
   if (titleElement == null) {
     throw new Error("titleElement is null");
   }
-  const oldTitle = titleElement.textContent || "";
+  // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
+  const oldTitle = titleElement.textContent?.replace("...", "") || "";
   if (newTitle.length < oldTitle.length) {
     // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません
     return;
