@@ -6,16 +6,13 @@ import { browser } from "webextension-polyfill-ts";
  */
 function selectLinkElements(): Element[] {
   return (
-    Array.from(document.querySelectorAll(".yuRUbf a"))
+    Array.from(document.querySelectorAll('.yuRUbf a[href^="http"]'))
       // CSSクラスだけで検索結果URLだと特定できないので特定のものを除外します。
       .filter((a) => {
         const href = a.getAttribute("href");
         return (
           // TypeScriptの型システムを説得
           typeof href === "string" &&
-          // Googleの内部リンクを除外
-          !href.startsWith("#") &&
-          !href.startsWith("/") &&
           // ウェブキャッシュへのリンクを除外
           !href.startsWith("https://webcache.googleusercontent.com/")
         );
