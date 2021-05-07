@@ -67,3 +67,10 @@ WikipediaやArchWikiのタイトルを意味不明に変換する事案がよく
 ## after
 
 ![after](docs/after.png)
+
+# How to build
+
+~~~console
+yarn
+yarn package
+~~~
