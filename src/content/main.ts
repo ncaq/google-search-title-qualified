@@ -82,8 +82,12 @@ async function replaceLinkTitles(links: Element[]): Promise<void[]> {
 }
 
 /** エントリーポイント。 */
-async function main(): Promise<void[]> {
-  return replaceLinkTitles(selectLinkElements());
+async function main(): Promise<void> {
+  const links = selectLinkElements();
+  // スクロールせずに表示されるであろうリンクは優先的に処理します
+  const linksForFirstView = links.splice(0, 10);
+  await replaceLinkTitles(linksForFirstView);
+  await replaceLinkTitles(links);
 }
 
 // 検索されるたびに実行します。
