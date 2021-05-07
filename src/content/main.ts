@@ -6,16 +6,13 @@ import { browser } from "webextension-polyfill-ts";
  */
 function selectLinkElements(): Element[] {
   return (
-    Array.from(document.querySelectorAll(".yuRUbf a"))
+    Array.from(document.querySelectorAll('.yuRUbf a[href^="http"]'))
       // CSSクラスだけで検索結果URLだと特定できないので特定のものを除外します。
       .filter((a) => {
         const href = a.getAttribute("href");
         return (
           // TypeScriptの型システムを説得
           typeof href === "string" &&
-          // Googleの内部リンクを除外
-          !href.startsWith("#") &&
-          !href.startsWith("/") &&
           // ウェブキャッシュへのリンクを除外
           !href.startsWith("https://webcache.googleusercontent.com/")
         );
@@ -85,8 +82,12 @@ async function replaceLinkTitles(links: Element[]): Promise<void[]> {
 }
 
 /** エントリーポイント。 */
-async function main(): Promise<void[]> {
-  return replaceLinkTitles(selectLinkElements());
+async function main(): Promise<void> {
+  const links = selectLinkElements();
+  // スクロールせずに表示されるであろうリンクは優先的に処理します
+  const linksForFirstView = links.splice(0, 10);
+  await replaceLinkTitles(linksForFirstView);
+  await replaceLinkTitles(links);
 }
 
 // 検索されるたびに実行します。

@@ -34,27 +34,41 @@ async function listener(message: unknown): Promise<string | undefined> {
   if (message.endsWith(".pdf")) {
     return undefined;
   }
-  const response = await fetch(message, {
-    // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
-    mode: "no-cors",
-    // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
-    credentials: "omit",
-    // 出来るだけブラウザのキャッシュを使っていきます
-    cache: "force-cache",
-    // リダイレクトを追うことを明示的に指定
-    redirect: "follow",
-  });
-  if (!response.ok) {
-    throw new Error(`response is not ok ${JSON.stringify(response)}`);
+  const abortController = new AbortController();
+  // ネットワーク通信は10秒でタイムアウト。
+  // やたらと時間がかかるサイトはどうせろくでもないことが多い。
+  const timeout = setTimeout(() => abortController.abort(), 10000);
+  try {
+    const response = await fetch(message, {
+      // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
+      mode: "no-cors",
+      // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
+      credentials: "omit",
+      // 出来るだけブラウザのキャッシュを使っていきます
+      cache: "force-cache",
+      // リダイレクトを追うことを明示的に指定
+      redirect: "follow",
+      // タイムアウト中断コントローラ
+      signal: abortController.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`response is not ok ${JSON.stringify(response)}`);
+    }
+    // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます
+    const text = await response.text();
+    const dom = domParser.parseFromString(text, "text/html");
+    // UTF-8でない場合取得を諦める
+    if (detectIsUtf8(response, dom)) {
+      return dom.querySelector("title")?.textContent || undefined;
+    }
+    return undefined;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(`listener err: $(JSON.stringify(err))`);
+    return undefined;
+  } finally {
+    clearTimeout(timeout);
   }
-  // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます
-  const text = await response.text();
-  const dom = domParser.parseFromString(text, "text/html");
-  // UTF-8でない場合取得を諦める
-  if (detectIsUtf8(response, dom)) {
-    return dom.querySelector("title")?.textContent || undefined;
-  }
-  return undefined;
 }
 
 browser.runtime.onMessage.addListener(listener);
