@@ -56,38 +56,43 @@ async function replace(url: string, link: Element): Promise<void> {
  * 要素を置き換える関数を呼び出します。
  */
 async function replaceLinkTitle(link: Element): Promise<void> {
-  const href = link.getAttribute("href");
-  if (href == null) {
-    throw new Error(`link don't have href: link: ${JSON.stringify(link)}`);
+  try {
+    const href = link.getAttribute("href");
+    if (href == null) {
+      throw new Error(`link don't have href: link: ${JSON.stringify(link)}`);
+    }
+    return await replace(href, link);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `replaceLinkTitles: err: ${JSON.stringify(err)}, link: ${JSON.stringify(
+        link
+      )}`
+    );
+    return undefined;
   }
-  return replace(href, link);
 }
 
 /**
  * 複数の要素を順不同で置き換えます。
  */
 async function replaceLinkTitles(links: Element[]): Promise<void[]> {
-  return Promise.all(
-    links.map(async (link) =>
-      replaceLinkTitle(link).catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(
-          `replaceLinkTitles: err: ${JSON.stringify(
-            err
-          )}, link: ${JSON.stringify(link)}`
-        );
-      })
-    )
-  );
+  return Promise.all(links.map(async (link) => replaceLinkTitle(link)));
 }
 
 /** エントリーポイント。 */
 async function main(): Promise<void> {
   const links = selectLinkElements();
-  // スクロールせずに表示されるであろうリンクは優先的に処理します
+  // スクロールせずに表示されるであろうリンクは優先的に処理します。
   const linksForFirstView = links.splice(0, 10);
+  // ファーストビューは非同期でfetchを同時に実行して速く取得を試みます。
   await replaceLinkTitles(linksForFirstView);
-  await replaceLinkTitles(links);
+  // 残りはネットワークリソースをあまり消費しないようにあえて1件ずつ処理します。
+  // eslint-disable-next-line no-restricted-syntax
+  for (const link of links) {
+    // eslint-disable-next-line no-await-in-loop
+    await replaceLinkTitle(link);
+  }
 }
 
 // 検索されるたびに実行します。
