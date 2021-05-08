@@ -1,5 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 
+const googleWebCacheRegex = /https?:\/\/webcache.googleusercontent.com/;
+
 /**
  * 置き換える対象の検索結果要素一覧を取得します。
  * Googleの仕様変更に一番左右されそうな部分。
@@ -14,7 +16,7 @@ function selectLinkElements(): Element[] {
           // TypeScriptの型システムを説得
           typeof href === "string" &&
           // ウェブキャッシュへのリンクを除外
-          !href.startsWith("https://webcache.googleusercontent.com/")
+          !googleWebCacheRegex.test(href)
         );
       })
   );
