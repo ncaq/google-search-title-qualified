@@ -36,6 +36,8 @@
     "web-ext-submit": "^6.1.0"
   },
   "dependencies": {
+    "date-fns": "^2.21.3",
+    "dexie": "^3.0.3",
     "node-fetch": "^2.6.1",
     "webextension-polyfill-ts": "^0.25.0"
   }

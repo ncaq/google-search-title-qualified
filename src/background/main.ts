@@ -1,4 +1,72 @@
 import { browser } from "webextension-polyfill-ts";
+import Dexie from "dexie";
+import sub from "date-fns/sub";
+
+/** IndexedDBに格納するエントリ */
+type TitleCache = {
+  /**
+   * URLをユニークなプライマリキーにすることで変換する手間を節約。
+   * ユニークキーから簡単に単一の値を取得する方法はDexieでは見つかりませんでした。
+   */
+  url: string;
+  /**
+   * 本体であるタイトルを格納。
+   * 取得出来なかった場合も出来なかったことを保存。
+   */
+  title: string | undefined;
+  /**
+   * 定期的にキャッシュをクリアしてサイズを節約し、
+   * データをある程度最新のものに保つために、
+   * 生成日を保存してインデックスしておきます。
+   */
+  createdAt: Date;
+};
+
+/** 全体データベース。 */
+const db = new Dexie("GSTQDatabase");
+db.version(1).stores({
+  titleCache: "url, createdAt",
+});
+
+/** タイトルをキャッシュするためのテーブル。 */
+const titleCacheTable = db.table("titleCache") as Dexie.Table<
+  TitleCache,
+  string
+>;
+
+/** URLを使ってタイトルをキャッシュから取得します。 */
+async function getTitleCache(url: string): Promise<string | undefined> {
+  return (await titleCacheTable.get(url))?.title;
+}
+
+/** キャッシュを保存します。 */
+async function saveCache(
+  url: string,
+  title: string | undefined
+): Promise<string> {
+  return titleCacheTable.add({ url, title, createdAt: new Date() });
+}
+
+/** 古いキャッシュを削除します。 */
+async function clearOldCache(): Promise<number> {
+  const now = new Date();
+  // 一週間超えたものをデータ削除することにします。
+  const expires = sub(now, { weeks: 1 });
+  return titleCacheTable.where("createdAt").below(expires).delete();
+}
+
+/** floating asyncでキャッシュ削除。 */
+function clearOldCacheFloating(): void {
+  clearOldCache().catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error(`clearOldCache is err: ${JSON.stringify(err)}`);
+  });
+}
+
+// 起動時にキャッシュ削除。
+clearOldCacheFloating();
+// 一時間ごとにキャッシュ削除。
+setInterval(clearOldCacheFloating, 3600000);
 
 /**
  * 雑に文字コード推定を行います。
@@ -25,13 +93,13 @@ function detectIsUtf8(response: Response, d: Document): boolean {
 const domParser = new DOMParser();
 
 /** URLからHTMLを取得解析してタイトルを取得します */
-async function getHtmlTitle(urlString: string): Promise<string | undefined> {
+async function getHtmlTitle(url: string): Promise<string | undefined> {
   const abortController = new AbortController();
   // ネットワーク通信は10秒でタイムアウト。
   // やたらと時間がかかるサイトはどうせろくでもないことが多い。
   const timeout = setTimeout(() => abortController.abort(), 10000);
   try {
-    const response = await fetch(urlString, {
+    const response = await fetch(url, {
       // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
       mode: "no-cors",
       // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
@@ -44,9 +112,7 @@ async function getHtmlTitle(urlString: string): Promise<string | undefined> {
       signal: abortController.signal,
     });
     if (!response.ok) {
-      throw new Error(
-        `${urlString}: response is not ok ${JSON.stringify(response)}`
-      );
+      throw new Error(`${url}: response is not ok ${JSON.stringify(response)}`);
     }
     // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます。
     const text = await response.text();
@@ -75,7 +141,18 @@ async function listener(message: unknown): Promise<string | undefined> {
   if (message.endsWith(".pdf")) {
     return undefined;
   }
-  return getHtmlTitle(message);
+  const url = message;
+  const cacheTitle = await getTitleCache(url);
+  if (cacheTitle == null) {
+    const title = await getHtmlTitle(url);
+    // あえてPromiseの終了を待ちません。
+    saveCache(url, title).catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`saveCacheNoWait is err: ${JSON.stringify(err)}`);
+    });
+    return title;
+  }
+  return cacheTitle;
 }
 
 browser.runtime.onMessage.addListener(listener);
