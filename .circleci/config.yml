@@ -1,6 +1,5 @@
-version: 2.1
 jobs:
-  build:
+  lint:
     docker:
       - image: circleci/node:14
     steps:
@@ -8,5 +7,29 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn package
       - run: yarn lint
+  deploy:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run: yarn install --frozen-lockfile
+      - run: yarn package
+      - run: yarn web-ext-submit
       - store_artifacts:
           path: web-ext-artifacts
+      - store_artifacts:
+          path: google-search-title-qualified.tar.gz
+
+workflows:
+  version: 2.1
+  lint-deploy:
+    jobs:
+      - lint
+      - deploy:
+          requires:
+            - lint
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v/
