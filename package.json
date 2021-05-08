@@ -3,6 +3,7 @@
   "author": "ncaq <ncaq@ncaq.net>",
   "license": "MIT",
   "scripts": {
+    "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
     "build": "esbuild --bundle --outdir=dist --target=firefox78 --minify src/background/main.ts src/content/main.ts",
     "fix": "FORCE_COLOR=1 run-p --print-label fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
@@ -12,7 +13,7 @@
     "lint:prettier": "prettier --ignore-path .gitignore --check **/*.ts",
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint",
-    "package": "rm -rf dist/ && yarn build && web-ext build --config web-ext-config.js",
+    "package": "rm -rf dist/ && yarn build && web-ext build --config web-ext-config.js && yarn archive",
     "start": "web-ext run --firefox-profile google-search-title-qualified",
     "watch": "esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
   },
@@ -31,7 +32,8 @@
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
-    "web-ext": "^6.1.0"
+    "web-ext": "^6.1.0",
+    "web-ext-submit": "^6.1.0"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",

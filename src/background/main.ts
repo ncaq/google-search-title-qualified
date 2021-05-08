@@ -64,7 +64,7 @@ async function listener(message: unknown): Promise<string | undefined> {
     return undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(`listener err: $(JSON.stringify(err))`);
+    console.error(`listener err: ${JSON.stringify(err)}`);
     return undefined;
   } finally {
     clearTimeout(timeout);
