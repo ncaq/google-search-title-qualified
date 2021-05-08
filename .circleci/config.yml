@@ -21,7 +21,7 @@ jobs:
           path: google-search-title-qualified.tar.gz
 
 workflows:
-  version: 2.1
+  version: 2
   lint-deploy:
     jobs:
       - lint
