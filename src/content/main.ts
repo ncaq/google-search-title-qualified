@@ -39,7 +39,9 @@ async function replace(url: string, link: Element): Promise<void> {
   // タイトルがstringではない場合プログラミングミスなので例外を投げます。
   if (typeof newTitle !== "string") {
     throw new Error(
-      `newTitle !== "string": newTitle: ${JSON.stringify(newTitle)}`
+      `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
+        newTitle
+      )}`
     );
   }
   // 該当の検索結果からタイトル部分を表示するDOMを取得します。
@@ -63,16 +65,12 @@ async function replaceLinkTitle(link: Element): Promise<void> {
   try {
     const href = link.getAttribute("href");
     if (href == null) {
-      throw new Error(`link don't have href: link: ${JSON.stringify(link)}`);
+      throw new Error("link don't have href");
     }
     return await replace(href, link);
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(
-      `replaceLinkTitles: err: ${JSON.stringify(err)}, link: ${JSON.stringify(
-        link
-      )}`
-    );
+    console.error("replaceLinkTitle is error.", err, link);
     return undefined;
   }
 }

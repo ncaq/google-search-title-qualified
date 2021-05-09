@@ -59,7 +59,7 @@ async function clearOldCache(): Promise<number> {
 function clearOldCacheFloating(): void {
   clearOldCache().catch((err) => {
     // eslint-disable-next-line no-console
-    console.error(`clearOldCache is err: ${JSON.stringify(err)}`);
+    console.error("clearOldCache is error.", err);
   });
 }
 
@@ -124,7 +124,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     return undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error(`listener err: ${JSON.stringify(err)}`);
+    console.error("listener error", err);
     return undefined;
   } finally {
     clearTimeout(timeout);
@@ -135,7 +135,9 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
 async function listener(message: unknown): Promise<string | undefined> {
   // メッセージ内容がおかしい場合はエラー
   if (typeof message !== "string") {
-    throw new Error(`message is not URL: ${JSON.stringify(message)}`);
+    throw new Error(
+      `message is not string, is ${typeof message}: ${JSON.stringify(message)}`
+    );
   }
   // PDFは読み込まない
   if (message.endsWith(".pdf")) {
@@ -148,7 +150,7 @@ async function listener(message: unknown): Promise<string | undefined> {
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
-      console.error(`saveCacheNoWait is err: ${JSON.stringify(err)}`);
+      console.error("saveCacheNoWait is error", err);
     });
     return title;
   }
