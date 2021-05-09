@@ -8,7 +8,9 @@ const googleWebCacheRegex = /https?:\/\/webcache.googleusercontent.com/;
  */
 function selectLinkElements(): Element[] {
   return (
-    Array.from(document.querySelectorAll('.yuRUbf a[href^="http"]'))
+    Array.from(
+      document.querySelectorAll('.tF2Cxc .yuRUbf a[href^="http"]:not(.fl)')
+    )
       // CSSクラスだけで検索結果URLだと特定できないので特定のものを除外します。
       .filter((a) => {
         const href = a.getAttribute("href");
