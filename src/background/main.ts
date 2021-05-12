@@ -112,7 +112,9 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       signal: abortController.signal,
     });
     if (!response.ok) {
-      throw new Error(`${url}: response is not ok ${JSON.stringify(response)}`);
+      throw new Error(
+        `${url}: response is not ok ${JSON.stringify(response.statusText)}`
+      );
     }
     // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます。
     const text = await response.text();
