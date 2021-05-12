@@ -150,7 +150,7 @@ async function listener(message: unknown): Promise<string | undefined> {
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
-      console.error("saveCacheNoWait is error", err);
+      console.error("saveCache is error", err);
     });
     return title;
   }
