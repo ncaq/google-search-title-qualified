@@ -44,7 +44,7 @@ async function saveCache(
   url: string,
   title: string | undefined
 ): Promise<string> {
-  return titleCacheTable.add({ url, title, createdAt: new Date() });
+  return titleCacheTable.put({ url, title, createdAt: new Date() });
 }
 
 /** 古いキャッシュを削除します。 */
@@ -52,7 +52,12 @@ async function clearOldCache(): Promise<number> {
   const now = new Date();
   // 一週間超えたものをデータ削除することにします。
   const expires = sub(now, { weeks: 1 });
-  return titleCacheTable.where("createdAt").below(expires).delete();
+  // eslint-disable-next-line no-console
+  console.log("cache count: before", await titleCacheTable.count());
+  const result = titleCacheTable.where("createdAt").below(expires).delete();
+  // eslint-disable-next-line no-console
+  console.log("cache count: after", await titleCacheTable.count());
+  return result;
 }
 
 /** floating asyncでキャッシュ削除。 */
@@ -126,7 +131,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     return undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error("listener error", err);
+    console.error("listener error", err, url);
     return undefined;
   } finally {
     clearTimeout(timeout);
@@ -152,7 +157,7 @@ async function listener(message: unknown): Promise<string | undefined> {
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
-      console.error("saveCache is error", err);
+      console.error("saveCache is error", err, url, title);
     });
     return title;
   }
