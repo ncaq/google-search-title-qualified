@@ -112,7 +112,9 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       signal: abortController.signal,
     });
     if (!response.ok) {
-      throw new Error(`${url}: response is not ok ${JSON.stringify(response)}`);
+      throw new Error(
+        `${url}: response is not ok ${JSON.stringify(response.statusText)}`
+      );
     }
     // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます。
     const text = await response.text();
@@ -150,7 +152,7 @@ async function listener(message: unknown): Promise<string | undefined> {
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
-      console.error("saveCacheNoWait is error", err);
+      console.error("saveCache is error", err);
     });
     return title;
   }
