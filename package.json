@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@mysticatea/eslint-plugin": "^13.0.0",
+    "@types/encoding-japanese": "^1.0.17",
     "@types/node": "^15.0.1",
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -38,6 +39,7 @@
   "dependencies": {
     "date-fns": "^2.21.3",
     "dexie": "^3.0.3",
+    "encoding-japanese": "^1.0.30",
     "node-fetch": "^2.6.1",
     "webextension-polyfill-ts": "^0.25.0"
   }

@@ -1,5 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
 import Dexie from "dexie";
+import encodingJapanese from "encoding-japanese";
 import sub from "date-fns/sub";
 
 /** IndexedDBに格納するエントリ */
@@ -73,29 +74,74 @@ clearOldCacheFloating();
 // 一時間ごとにキャッシュ削除。
 setInterval(clearOldCacheFloating, 3600000);
 
+/** この拡張機能が対応するエンコーディング一覧です。 */
+const encodings = ["UTF8", "SJIS", "EUCJP"] as const;
+/** 対応エンコードを型付けします。 */
+type Encoding = typeof encodings[number];
+
 /**
- * 雑に文字コード推定を行います。
+ * エンコードを判定するための正規表現マップです。
+ * これにより、雑に文字コード推定を行います。
  * 本当はブラウザの自動判定機能が使いたいです、誰か方法を教えてください。
  */
-function detectIsUtf8(response: Response, d: Document): boolean {
-  const re = /UTF[-_]8/i;
-  return (
-    // HTTP header
-    re.test(response.headers.get("content-type") || "") ||
-    // HTML5
-    re.test(d.querySelector("meta[charset]")?.getAttribute("charset") || "") ||
-    // HTML4
-    re.test(
-      d
-        .querySelector('meta[http-equiv="Content-Type"]')
-        ?.getAttribute("content") || ""
-    ) ||
-    // charsetが存在しない場合、規格上UTF-8になりますが、規格を守ってるサイトも多いと思うので、安全側に倒してfalseをfallbackにします。
-    false
-  );
+const encodingsRegex: Map<Encoding, RegExp> = new Map([
+  ["UTF8", /UTF[-_]8/i],
+  ["SJIS", /Shift[-_]JIS/i],
+  ["EUCJP", /EUC[-_]JP/i],
+]);
+
+/** HTTPとHTMLの情報から文字コードの推定を行います。 */
+function detectEncoding(response: Response, d: Document): Encoding | undefined {
+  const httpContentType = response.headers.get("content-type") || "";
+  const html5Charset =
+    d.querySelector("meta[charset]")?.getAttribute("charset") || "";
+  const html4ContentType =
+    d
+      .querySelector('meta[http-equiv="Content-Type"]')
+      ?.getAttribute("content") || "";
+  // forのcontinueなどの機能を使った方がスッキリと書けるので、あえてforを使います。
+  // eslint-disable-next-line no-restricted-syntax
+  for (const encoding of encodings) {
+    const re = encodingsRegex.get(encoding);
+    if (re == null) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    if (
+      re.test(httpContentType) ||
+      re.test(html5Charset) ||
+      re.test(html4ContentType)
+    ) {
+      return encoding;
+    }
+  }
+  // charsetなどが存在しない場合、
+  // HTML最新規格ではUTF-8になりますが、
+  // そもそも最新規格を参照していないサイトも多いと思うので不明としておきます。
+  return undefined;
 }
 
+/** バックグラウンドscript全体でDOMParserを使い回します。新規に生成していくのとどっちが早いのかは正直知りません。 */
 const domParser = new DOMParser();
+
+/** Uint8Arrayとして取り扱った非Unicode文字列をstringに戻すためのインスタンスを持ち回します。 */
+const utf8Decoder = new TextDecoder();
+
+/** encoding-japaneseが対応している文字コードのページのタイトルを取得します。 */
+function encodingJapaneseTitle(
+  jp: Uint8Array,
+  encoding: Encoding
+): string | undefined {
+  const utf8 = encodingJapanese.convert(jp, {
+    to: "UTF8",
+    from: encoding,
+  });
+  const dom = domParser.parseFromString(
+    utf8Decoder.decode(new Uint8Array(utf8)),
+    "text/html"
+  );
+  return dom.querySelector("title")?.textContent || undefined;
+}
 
 /** URLからHTMLを取得解析してタイトルを取得します */
 async function getHtmlTitle(url: string): Promise<string | undefined> {
@@ -121,12 +167,26 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
         `${url}: response is not ok ${JSON.stringify(response.statusText)}`
       );
     }
-    // htmlを直接要求できないのでtextで取得してDOMParserに送り込みます。
-    const text = await response.text();
+    // encodingJapaneseはstringに完全になってないArrayを要求するため、blobでレスポンスを消費します。
+    const blob = await response.blob();
+    const text = await blob.text();
     const dom = domParser.parseFromString(text, "text/html");
-    // UTF-8でない場合取得を諦めます。
-    if (detectIsUtf8(response, dom)) {
+    // エンコードを推定します。
+    const encoding = detectEncoding(response, dom);
+    // エンコードを取得できなかったら無を返します。
+    if (encoding == null) {
+      return undefined;
+    }
+    // UTF-8の場合変換は必要ありません。
+    if (encoding === "UTF8") {
       return dom.querySelector("title")?.textContent || undefined;
+    }
+    // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
+    if (["SJIS", "EUCJP"].includes(encoding)) {
+      return encodingJapaneseTitle(
+        new Uint8Array(await blob.arrayBuffer()),
+        encoding
+      );
     }
     return undefined;
   } catch (err) {
