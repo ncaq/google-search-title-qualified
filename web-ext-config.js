@@ -13,6 +13,7 @@ const ignoreFiles = dir.filter(
 module.exports = {
   build: {
     overwriteDest: true,
+    filename: "google-search-title-qualified.zip",
   },
   ignoreFiles,
 };
