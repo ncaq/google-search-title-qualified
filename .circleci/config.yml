@@ -47,10 +47,9 @@ workflows:
             - lint
           filters:
             branches:
-              only:
-                - master
+              ignore: /.*/
             tags:
-              only: /^v/
+              only: /^v.*/
       - cws/upload:
           attach-workspace: true
           auto-publish: true
