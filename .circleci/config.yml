@@ -46,8 +46,6 @@ workflows:
           requires:
             - lint
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
       - cws/upload:
