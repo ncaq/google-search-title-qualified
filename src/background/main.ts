@@ -92,19 +92,10 @@ const encodingsRegex: Map<Encoding, RegExp> = new Map([
 
 /** エンコーディング判定用のの正規表現に一致するか判断して、最初に一致したものを返します。 */
 function testEncoding(source: string): Encoding | undefined {
-  // forのcontinueなどの機能を使った方がスッキリと書けるので、あえてforを使います。
-  // eslint-disable-next-line no-restricted-syntax
-  for (const encoding of encodings) {
+  return encodings.find((encoding) => {
     const re = encodingsRegex.get(encoding);
-    if (re == null) {
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-    if (re.test(source)) {
-      return encoding;
-    }
-  }
-  return undefined;
+    return re != null && re.test(source);
+  });
 }
 
 /**
