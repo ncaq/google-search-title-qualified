@@ -41,15 +41,18 @@ workflows:
   version: 2
   lint-deploy:
     jobs:
-      - lint
+      - lint:
+          filters:
+            tags:
+              only: /^v.*/
       - deploy:
           requires:
             - lint
           filters:
-            branches:
-              only: master
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
       - cws/upload:
           attach-workspace: true
           auto-publish: true
@@ -60,3 +63,8 @@ workflows:
           workspace-root: ~/google-search-title-qualified
           requires:
             - deploy
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
