@@ -155,9 +155,9 @@ function encodingJapaneseTitle(
 /** ネットワーク帯域を利用する関数を明示化してまとめます */
 function fetchPage(url: string): Promise<Response> {
   const abortController = new AbortController();
-  // ネットワーク通信は10秒でタイムアウト。
+  // ネットワーク通信は30秒でタイムアウト。
   // やたらと時間がかかるサイトはどうせろくでもないことが多い。
-  const timeout = setTimeout(() => abortController.abort(), 10000);
+  const timeout = setTimeout(() => abortController.abort(), 30 * 1000);
   try {
     return fetch(url, {
       // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
