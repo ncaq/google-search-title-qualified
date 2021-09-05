@@ -24,5 +24,6 @@ module.exports = {
     "@mysticatea/no-useless-rest-spread": "error",
     curly: ["error", "all"],
     "sort-imports": ["error", { ignoreDeclarationSort: true }],
+    "import/prefer-default-export": 0,
   },
 };
