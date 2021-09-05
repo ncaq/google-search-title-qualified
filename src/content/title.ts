@@ -1,29 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
 
-const googleWebCacheRegex = /https?:\/\/webcache.googleusercontent.com/;
-
-/**
- * 置き換える対象の検索結果要素一覧を取得します。
- * Googleの仕様変更に一番左右されそうな部分。
- */
-function selectLinkElements(): Element[] {
-  return (
-    Array.from(
-      document.querySelectorAll('.tF2Cxc .yuRUbf a[href^="http"]:not(.fl)')
-    )
-      // CSSクラスだけで検索結果URLだと特定するのが難しいので(正規表現を頑張ればできる?)filterで除外します。
-      .filter((a) => {
-        const href = a.getAttribute("href");
-        return (
-          // TypeScriptの型システムを説得
-          typeof href === "string" &&
-          // ウェブキャッシュへのリンクを除外
-          !googleWebCacheRegex.test(href)
-        );
-      })
-  );
-}
-
 /**
  * ページ内容のタイトルをbackgroundから取得して、取得出来たものにタイトルを書き換えます。
  * @param url - 取得対象のページのURL、すぐデシリアライズしてメッセージとして送るのでstring
@@ -78,19 +54,15 @@ async function replaceLinkTitle(link: Element): Promise<void> {
 /**
  * 複数の要素を順不同で置き換えます。
  */
-async function replaceLinkTitles(links: Element[]): Promise<void[]> {
-  return Promise.all(links.map(async (link) => replaceLinkTitle(link)));
-}
-
-/**
- * 検索結果ページのタイトルを書き換えます。
- */
-export async function replacePageTitle(): Promise<void> {
-  const links = selectLinkElements();
+export async function replaceLinkTitles(linksOrigin: Element[]): Promise<void> {
+  // spliceするため、元の配列に破壊的変更が及びにくいようにするためにシャローコピー。
+  const links = [...linksOrigin];
   // スクロールせずに表示されるであろうリンクは優先的に処理します。
   const linksForFirstView = links.splice(0, 10);
   // ファーストビューは非同期でfetchを同時に実行して速く取得を試みます。
-  await replaceLinkTitles(linksForFirstView);
+  await Promise.all(
+    linksForFirstView.map(async (link) => replaceLinkTitle(link))
+  );
   // 残りはネットワークリソースをあまり消費しないようにあえて1件ずつ処理します。
   // eslint-disable-next-line no-restricted-syntax
   for (const link of links) {
