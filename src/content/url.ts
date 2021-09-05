@@ -7,9 +7,10 @@ function replace(url: string, link: Element): void {
   if (div == null) {
     throw new Error("div is null");
   }
+  const decoded = decodeURI(url);
   Array.from(div.querySelectorAll(".TbwUpd cite")).forEach((cite) => {
     // eslint-disable-next-line no-param-reassign
-    cite.textContent = url;
+    cite.textContent = decoded;
   });
 }
 
