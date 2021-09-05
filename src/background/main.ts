@@ -152,14 +152,14 @@ function encodingJapaneseTitle(
   return dom.querySelector("title")?.textContent || undefined;
 }
 
-/** URLからHTMLを取得解析してタイトルを取得します */
-async function getHtmlTitle(url: string): Promise<string | undefined> {
+/** ネットワーク帯域を利用する関数を明示化してまとめます */
+function fetchPage(url: string): Promise<Response> {
   const abortController = new AbortController();
   // ネットワーク通信は10秒でタイムアウト。
   // やたらと時間がかかるサイトはどうせろくでもないことが多い。
   const timeout = setTimeout(() => abortController.abort(), 10000);
   try {
-    const response = await fetch(url, {
+    return fetch(url, {
       // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
       mode: "no-cors",
       // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
@@ -171,6 +171,15 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       // タイムアウト中断コントローラ。
       signal: abortController.signal,
     });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/** URLからHTMLを取得解析してタイトルを取得します */
+async function getHtmlTitle(url: string): Promise<string | undefined> {
+  try {
+    const response = await fetchPage(url);
     if (!response.ok) {
       throw new Error(
         `${url}: response is not ok ${JSON.stringify(response.statusText)}`
@@ -202,8 +211,6 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     // eslint-disable-next-line no-console
     console.error("listener error", err, url);
     return undefined;
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
