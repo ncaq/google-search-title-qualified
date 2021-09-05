@@ -54,19 +54,6 @@ async function replaceLinkTitle(link: Element): Promise<void> {
 /**
  * 複数の要素を順不同で置き換えます。
  */
-export async function replaceLinkTitles(linksOrigin: Element[]): Promise<void> {
-  // spliceするため、元の配列に破壊的変更が及びにくいようにするためにシャローコピー。
-  const links = [...linksOrigin];
-  // スクロールせずに表示されるであろうリンクは優先的に処理します。
-  const linksForFirstView = links.splice(0, 10);
-  // ファーストビューは非同期でfetchを同時に実行して速く取得を試みます。
-  await Promise.all(
-    linksForFirstView.map(async (link) => replaceLinkTitle(link))
-  );
-  // 残りはネットワークリソースをあまり消費しないようにあえて1件ずつ処理します。
-  // eslint-disable-next-line no-restricted-syntax
-  for (const link of links) {
-    // eslint-disable-next-line no-await-in-loop
-    await replaceLinkTitle(link);
-  }
+export async function replaceLinkTitles(links: Element[]): Promise<void[]> {
+  return Promise.all(links.map((link) => replaceLinkTitle(link)));
 }

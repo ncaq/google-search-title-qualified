@@ -1,7 +1,8 @@
-import Dexie from "dexie";
-import browser from "webextension-polyfill";
-import encodingJapanese from "encoding-japanese";
+import { Sema } from "async-sema";
 import sub from "date-fns/sub";
+import Dexie from "dexie";
+import encodingJapanese from "encoding-japanese";
+import browser from "webextension-polyfill";
 
 /** IndexedDBに格納するエントリ */
 type TitleCache = {
@@ -152,25 +153,42 @@ function encodingJapaneseTitle(
   return dom.querySelector("title")?.textContent || undefined;
 }
 
+/** fetchコネクションを3つに制限します。 */
+const fetchSema = new Sema(3);
+
+/** ネットワーク帯域を利用する関数を明示化してまとめます。 */
+async function fetchPage(url: string): Promise<Response> {
+  try {
+    await fetchSema.acquire();
+    const abortController = new AbortController();
+    // ネットワーク通信は30秒でタイムアウト。
+    // やたらと時間がかかるサイトはどうせろくでもないことが多い。
+    const timeout = setTimeout(() => abortController.abort(), 30 * 1000);
+    try {
+      return await fetch(url, {
+        // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
+        mode: "no-cors",
+        // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
+        credentials: "omit",
+        // 出来るだけブラウザのキャッシュを使っていきます。
+        cache: "force-cache",
+        // リダイレクトを追うことを明示的に指定。
+        redirect: "follow",
+        // タイムアウト中断コントローラ。
+        signal: abortController.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+  } finally {
+    fetchSema.release();
+  }
+}
+
 /** URLからHTMLを取得解析してタイトルを取得します */
 async function getHtmlTitle(url: string): Promise<string | undefined> {
-  const abortController = new AbortController();
-  // ネットワーク通信は10秒でタイムアウト。
-  // やたらと時間がかかるサイトはどうせろくでもないことが多い。
-  const timeout = setTimeout(() => abortController.abort(), 10000);
   try {
-    const response = await fetch(url, {
-      // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
-      mode: "no-cors",
-      // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
-      credentials: "omit",
-      // 出来るだけブラウザのキャッシュを使っていきます。
-      cache: "force-cache",
-      // リダイレクトを追うことを明示的に指定。
-      redirect: "follow",
-      // タイムアウト中断コントローラ。
-      signal: abortController.signal,
-    });
+    const response = await fetchPage(url);
     if (!response.ok) {
       throw new Error(
         `${url}: response is not ok ${JSON.stringify(response.statusText)}`
@@ -202,8 +220,6 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     // eslint-disable-next-line no-console
     console.error("listener error", err, url);
     return undefined;
-  } finally {
-    clearTimeout(timeout);
   }
 }
 

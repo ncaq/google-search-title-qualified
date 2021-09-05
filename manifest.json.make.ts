@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
 import fs from "fs/promises";
+import fetch from "node-fetch";
 
 /** Googleの公式情報から検索ドメインを取ってきます。 */
 async function selectGoogleSearchUrls(): Promise<string[]> {

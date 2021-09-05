@@ -38,9 +38,11 @@
     "web-ext-submit": "^6.1.0"
   },
   "dependencies": {
+    "async-sema": "^3.1.1",
     "date-fns": "^2.21.3",
     "dexie": "^3.0.3",
     "encoding-japanese": "^1.0.30",
+    "events": "^3.3.0",
     "node-fetch": "^2.6.1",
     "string-width": "^5.0.0",
     "webextension-polyfill": "^0.8.0"

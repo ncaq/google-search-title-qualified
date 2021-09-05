@@ -23,7 +23,8 @@ module.exports = {
     "@mysticatea/no-use-ignored-vars": "error",
     "@mysticatea/no-useless-rest-spread": "error",
     curly: ["error", "all"],
-    "sort-imports": ["error", { ignoreDeclarationSort: true }],
+    // importは同じレイヤーならアルファベット順に
+    "import/order": ["error", { alphabetize: { order: "asc" } }],
     "import/prefer-default-export": "off",
   },
 };

@@ -12,7 +12,7 @@ function selectLinkElements(): Element[] {
 }
 
 /** エントリーポイント。 */
-async function main(): Promise<void> {
+async function main(): Promise<void[]> {
   const links = selectLinkElements();
   const titleP = replaceLinkTitles(links);
   replaceLinkUrls(links);
