@@ -41,6 +41,7 @@
     "dexie": "^3.0.3",
     "encoding-japanese": "^1.0.30",
     "node-fetch": "^2.6.1",
+    "string-width": "^5.0.0",
     "webextension-polyfill-ts": "^0.25.0"
   }
 }
