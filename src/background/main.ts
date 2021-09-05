@@ -1,5 +1,5 @@
-import { browser } from "webextension-polyfill-ts";
 import Dexie from "dexie";
+import browser from "webextension-polyfill";
 import encodingJapanese from "encoding-japanese";
 import sub from "date-fns/sub";
 

@@ -1,4 +1,4 @@
-import { browser } from "webextension-polyfill-ts";
+import browser from "webextension-polyfill";
 
 /**
  * ページ内容のタイトルをbackgroundから取得して、取得出来たものにタイトルを書き換えます。
