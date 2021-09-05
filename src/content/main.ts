@@ -19,7 +19,7 @@ async function main(): Promise<void> {
   return titleP;
 }
 
-// importではなくエントリーポイントとして読み込まれた場合に実行します。
+// エントリーポイントを実行します。
 main().catch((e) => {
   throw e;
 });
