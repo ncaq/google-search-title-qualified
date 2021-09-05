@@ -5,6 +5,7 @@
 # google-search-title-qualified
 
 Google will omit the title of the web page. With this add-on, the original title is used as much as possible.
+And URL.
 
 [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 
@@ -14,6 +15,8 @@ Google will omit the title of the web page. With this add-on, the original title
 
 This rewrites Google's search results page to show Use the original title of your site as much as possible, instead of the Google-generated title.
 It is an extension that rewrites the Google search results page to display the original title of the site as much as possible.
+
+URLs are also not shortened as much as possible.
 
 Firefox and Chrome are supported.
 
@@ -62,6 +65,8 @@ However, if you are using a mobile connection, you should be careful.
 これはGoogleの検索結果ページを書き換えて、
 Googleが生成したタイトルではなく、
 なるべくサイトオリジナルのタイトルを検索結果ページに表示する拡張機能です。
+
+URLも極力短縮させません。
 
 FirefoxとChromeに対応しています。
 
