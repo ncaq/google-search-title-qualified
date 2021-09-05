@@ -1,8 +1,8 @@
+import { Sema } from "async-sema";
 import sub from "date-fns/sub";
 import Dexie from "dexie";
 import encodingJapanese from "encoding-japanese";
 import browser from "webextension-polyfill";
-import { Sema } from "async-sema";
 
 /** IndexedDBに格納するエントリ */
 type TitleCache = {
@@ -165,7 +165,7 @@ async function fetchPage(url: string): Promise<Response> {
     // やたらと時間がかかるサイトはどうせろくでもないことが多い。
     const timeout = setTimeout(() => abortController.abort(), 30 * 1000);
     try {
-      return fetch(url, {
+      return await fetch(url, {
         // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
         mode: "no-cors",
         // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
