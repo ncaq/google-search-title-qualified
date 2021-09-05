@@ -23,11 +23,16 @@ function replace(url: string, link: Element): void {
  * 指定linkのURL表示を書き換えます。
  */
 function replaceLinkUrl(link: Element): void {
-  const href = link.getAttribute("href");
-  if (href == null) {
-    throw new Error("link don't have href");
+  try {
+    const href = link.getAttribute("href");
+    if (href == null) {
+      throw new Error("link don't have href");
+    }
+    replace(href, link);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("replaceLinkUrl is error.", err, link);
   }
-  replace(href, link);
 }
 
 /**
