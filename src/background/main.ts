@@ -1,7 +1,7 @@
-import Dexie from "dexie";
-import browser from "webextension-polyfill";
-import encodingJapanese from "encoding-japanese";
 import sub from "date-fns/sub";
+import Dexie from "dexie";
+import encodingJapanese from "encoding-japanese";
+import browser from "webextension-polyfill";
 
 /** IndexedDBに格納するエントリ */
 type TitleCache = {
