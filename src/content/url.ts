@@ -7,9 +7,9 @@ function replace(urlString: string, link: Element): void {
   // URLのオリジンを強調するために、パスとオリジンを分離します。
   const url = new URL(urlString);
   // パーセントエンコーディングを解決
-  const decodedPathname = decodeURI(url.pathname);
+  const pathname = decodeURI(url.pathname);
   // URLが結構長い場合改行が発生してレイアウトがメチャクチャになる可能性が高いため書き換えません。
-  if (stringWidth(url.origin + decodedPathname) >= 80) {
+  if (stringWidth(url.origin + pathname) >= 80) {
     return;
   }
   // aの直下ではない部分のURLテキストを書き換えないと中途半端な書き換えになってしまうので、親の要素以下のciteを全書き換え。
@@ -23,7 +23,7 @@ function replace(urlString: string, link: Element): void {
     const span = document.createElement("span");
     // Googleが標準で使っているCSSクラスを使用します。
     span.setAttribute("class", "dyjrff qzEoUe");
-    span.textContent = decodedPathname;
+    span.textContent = pathname;
     cite.append(span);
   });
 }
