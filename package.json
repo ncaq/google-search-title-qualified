@@ -22,6 +22,7 @@
     "@types/encoding-japanese": "^1.0.17",
     "@types/node": "^16.7.10",
     "@types/node-fetch": "^2.5.10",
+    "@types/punycode": "^2.1.0",
     "@types/webextension-polyfill": "^0.8.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
@@ -44,6 +45,7 @@
     "encoding-japanese": "^1.0.30",
     "events": "^3.3.0",
     "node-fetch": "^2.6.1",
+    "punycode": "^2.1.1",
     "string-width": "^5.0.0",
     "webextension-polyfill": "^0.8.0"
   }

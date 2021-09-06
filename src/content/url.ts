@@ -1,3 +1,4 @@
+import punycode from "punycode";
 import stringWidth from "string-width";
 
 /**
@@ -5,11 +6,18 @@ import stringWidth from "string-width";
  */
 function replace(urlString: string, link: Element): void {
   // URLのオリジンを強調するために、パスとオリジンを分離します。
-  const u = new URL(urlString);
+  const url = new URL(urlString);
+  // プロトコルを取り出し。
+  const { protocol } = url;
+  // punycodeを解決。
+  // Node.jsにAPIが含まれるようになったから非推奨だと言われるのですが、ブラウザで使う代替が存在しないので無視します。
+  const host = punycode.toUnicode(url.host);
+  // 見やすいoriginを生成
+  const origin = `${protocol}://${host}`;
   // パーセントエンコーディングを解決
-  const pathname = decodeURI(u.pathname);
+  const pathname = decodeURI(url.pathname);
   // URLが結構長い場合改行が発生してレイアウトがメチャクチャになる可能性が高いため書き換えません。
-  if (stringWidth(u.origin + pathname) >= 80) {
+  if (stringWidth(origin + pathname) >= 80) {
     return;
   }
   // aの直下ではない部分のURLテキストを書き換えないと中途半端な書き換えになってしまうので、親の要素以下のciteを全書き換え。
@@ -19,7 +27,7 @@ function replace(urlString: string, link: Element): void {
   }
   Array.from(div.querySelectorAll(".TbwUpd cite")).forEach((cite) => {
     // eslint-disable-next-line no-param-reassign
-    cite.textContent = u.origin;
+    cite.textContent = origin;
     const span = document.createElement("span");
     // Googleが標準で使っているCSSクラスを使用します。
     span.setAttribute("class", "dyjrff qzEoUe");
