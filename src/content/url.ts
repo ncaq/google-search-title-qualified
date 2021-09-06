@@ -5,11 +5,11 @@ import stringWidth from "string-width";
  */
 function replace(urlString: string, link: Element): void {
   // URLのオリジンを強調するために、パスとオリジンを分離します。
-  const url = new URL(urlString);
+  const u = new URL(urlString);
   // パーセントエンコーディングを解決
-  const pathname = decodeURI(url.pathname);
+  const pathname = decodeURI(u.pathname);
   // URLが結構長い場合改行が発生してレイアウトがメチャクチャになる可能性が高いため書き換えません。
-  if (stringWidth(url.origin + pathname) >= 80) {
+  if (stringWidth(u.origin + pathname) >= 80) {
     return;
   }
   // aの直下ではない部分のURLテキストを書き換えないと中途半端な書き換えになってしまうので、親の要素以下のciteを全書き換え。
@@ -19,7 +19,7 @@ function replace(urlString: string, link: Element): void {
   }
   Array.from(div.querySelectorAll(".TbwUpd cite")).forEach((cite) => {
     // eslint-disable-next-line no-param-reassign
-    cite.textContent = url.origin;
+    cite.textContent = u.origin;
     const span = document.createElement("span");
     // Googleが標準で使っているCSSクラスを使用します。
     span.setAttribute("class", "dyjrff qzEoUe");
