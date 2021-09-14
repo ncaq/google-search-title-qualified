@@ -14,10 +14,11 @@ function replace(urlString: string, link: Element): void {
   const host = punycode.toUnicode(url.host);
   // 見やすいoriginを生成
   const origin = `${protocol}://${host}`;
-  // パーセントエンコーディングを解決
-  const pathname = decodeURI(url.pathname);
+  // パーセントエンコーディングを解決します。
+  // 一部だけ入力しても問題ないようです。
+  const pathAndQuery = decodeURI(url.pathname + url.search);
   // URLが結構長い場合改行が発生してレイアウトがメチャクチャになる可能性が高いため書き換えません。
-  if (stringWidth(origin + pathname) >= 80) {
+  if (stringWidth(origin + pathAndQuery) >= 80) {
     return;
   }
   // aの直下ではない部分のURLテキストを書き換えないと中途半端な書き換えになってしまうので、親の要素以下のciteを全書き換え。
@@ -31,7 +32,7 @@ function replace(urlString: string, link: Element): void {
     const span = document.createElement("span");
     // Googleが標準で使っているCSSクラスを使用します。
     span.setAttribute("class", "dyjrff qzEoUe");
-    span.textContent = pathname;
+    span.textContent = pathAndQuery;
     cite.append(span);
   });
 }
