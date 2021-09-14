@@ -31,6 +31,14 @@ async function replace(url: string, link: Element): Promise<void> {
     // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません
     return;
   }
+  // リンクが異常に長いことがあります。
+  // 間違えてtitleタグが閉じられてないとか、
+  // HTMLじゃないものをHTMLとして認識してしまっていると言ったケースです。
+  // その場合置き換えを行いません。
+  // 異常な長さを検出することが目的なので日本語と英語の長さの違いなどは考慮しません。
+  if (newTitle.length > 500) {
+    return;
+  }
   titleElement.textContent = newTitle;
 }
 
