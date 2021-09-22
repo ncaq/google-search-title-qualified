@@ -6,9 +6,6 @@ executors:
       - image: circleci/node:14
     working_directory: ~/google-search-title-qualified
 
-orbs:
-  cws: sugarshin/chrome-webstore@0.0.3
-
 jobs:
   lint:
     executor: nodejs
@@ -17,25 +14,21 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn package
       - run: yarn lint
-  deploy:
+  deploy-firefox:
     executor: nodejs
     steps:
       # lintと作業内容をディレクトリごとにスマートに共有する方法がよく分かってないので別個になっています。
       - checkout
       - run: yarn install --frozen-lockfile
       - run: yarn package
-      # Firefox向けにデプロイ。
       - run: yarn web-ext-submit --config web-ext-config.js
-      # Chrome Wew Storeにデプロイするために保存しておきます。
-      - persist_to_workspace:
-          paths:
-            - web-ext-artifacts/google-search-title-qualified.zip
-          root: ~/google-search-title-qualified
-      # CircleCIのwebコンソールでもデプロイした内容が取得できるようにしておきます。
-      - store_artifacts:
-          path: web-ext-artifacts
-      - store_artifacts:
-          path: google-search-title-qualified.tar.gz
+  deploy-chrome:
+    executor: nodejs
+    steps:
+      - checkout
+      - run: yarn install --frozen-lockfile
+      - run: yarn package
+      - run: chrome-webstore-upload publish --source web-ext-artifacts/google-search-title-qualified.zip --extension-id bjcnnhojddnonjmhlpdjcdcfmofliagb
 
 workflows:
   version: 2
@@ -45,7 +38,7 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - deploy:
+      - deploy-firefox:
           requires:
             - lint
           filters:
@@ -53,16 +46,9 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - cws/upload:
-          attach-workspace: true
-          auto-publish: true
-          executor: nodejs
-          extension-id: bjcnnhojddnonjmhlpdjcdcfmofliagb
-          source: web-ext-artifacts/google-search-title-qualified.zip
-          use-yarn: true
-          workspace-root: ~/google-search-title-qualified
+      - deploy-chrome:
           requires:
-            - deploy
+            - lint
           filters:
             tags:
               only: /^v.*/
