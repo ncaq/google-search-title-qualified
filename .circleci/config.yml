@@ -3,7 +3,7 @@ version: 2.1
 executors:
   nodejs:
     docker:
-      - image: circleci/node:14
+      - image: cimg/node:14.17
     working_directory: ~/google-search-title-qualified
 
 jobs:
@@ -11,24 +11,54 @@ jobs:
     executor: nodejs
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-{{ checksum "package.json" }}-
       - run: yarn install --frozen-lockfile
       - run: yarn package
       - run: yarn lint
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
   deploy-firefox:
     executor: nodejs
     steps:
       # lintと作業内容をディレクトリごとにスマートに共有する方法がよく分かってないので別個になっています。
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-{{ checksum "package.json" }}-
       - run: yarn install --frozen-lockfile
       - run: yarn package
       - run: yarn web-ext-submit --config web-ext-config.js
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
   deploy-chrome:
     executor: nodejs
     steps:
       - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-{{ checksum "package.json" }}-
       - run: yarn install --frozen-lockfile
       - run: yarn package
       - run: yarn chrome-webstore-upload publish --source web-ext-artifacts/google-search-title-qualified.zip --extension-id bjcnnhojddnonjmhlpdjcdcfmofliagb
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
 workflows:
   version: 2
