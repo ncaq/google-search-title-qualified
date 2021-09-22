@@ -28,7 +28,7 @@ jobs:
       - checkout
       - run: yarn install --frozen-lockfile
       - run: yarn package
-      - run: chrome-webstore-upload publish --source web-ext-artifacts/google-search-title-qualified.zip --extension-id bjcnnhojddnonjmhlpdjcdcfmofliagb
+      - run: yarn chrome-webstore-upload publish --source web-ext-artifacts/google-search-title-qualified.zip --extension-id bjcnnhojddnonjmhlpdjcdcfmofliagb
 
 workflows:
   version: 2
