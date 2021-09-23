@@ -161,9 +161,9 @@ async function fetchPage(url: string): Promise<Response> {
   try {
     await fetchSema.acquire();
     const abortController = new AbortController();
-    // ネットワーク通信は30秒でタイムアウト。
+    // ネットワーク通信は15秒でタイムアウト。
     // やたらと時間がかかるサイトはどうせろくでもないことが多い。
-    const timeout = setTimeout(() => abortController.abort(), 30 * 1000);
+    const timeout = setTimeout(() => abortController.abort(), 15 * 1000);
     try {
       return await fetch(url, {
         // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
