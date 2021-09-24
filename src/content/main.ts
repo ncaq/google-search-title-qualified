@@ -26,9 +26,14 @@ main(document.documentElement).catch((e) => {
 
 // weAutoPagerizeに対応します。
 document.addEventListener("AutoPagerize_DOMNodeInserted", (event) => {
-  if (event.target instanceof Element) {
-    main(event.target).catch((e) => {
-      throw e;
-    });
+  if (!(event.target instanceof Element)) {
+    throw new Error(
+      `AutoPagerize_DOMNodeInserted: event.target is not Element. ${JSON.stringify(
+        event
+      )}`
+    );
   }
+  main(event.target).catch((e) => {
+    throw e;
+  });
 });
