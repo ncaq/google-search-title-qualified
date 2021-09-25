@@ -45,6 +45,8 @@
     "dexie": "^3.0.3",
     "encoding-japanese": "^1.0.30",
     "events": "^3.3.0",
+    "fp-ts": "^2.11.3",
+    "io-ts": "^2.2.16",
     "node-fetch": "^2.6.1",
     "punycode": "^2.1.1",
     "string-width": "^5.0.0",
