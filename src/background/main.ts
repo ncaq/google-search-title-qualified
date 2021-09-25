@@ -206,6 +206,8 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     }
     const publish = new URL("https://publish.twitter.com/oembed");
     publish.searchParams.set("url", url.href);
+    // textContentで表示するのでscriptは関係ないですが、余計なものなので取り除いておきます。
+    publish.searchParams.set("omit_script", "t");
     // ブラウザの言語設定が反映されないと日時が英語になって辛いので設定します。
     publish.searchParams.set("lang", navigator.language || "en");
     const response = await fetchPage(publish.href);
