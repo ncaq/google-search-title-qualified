@@ -25,6 +25,18 @@ async function replace(url: string, link: Element): Promise<void> {
   if (titleElement == null) {
     throw new Error("titleElement is null");
   }
+  const u = new URL(url);
+  if (
+    (u.hostname === "twitter.com" || u.hostname === "mobile.twitter.com") &&
+    /^\/\w+\/status\/\d+/.exec(u.pathname)
+  ) {
+    titleElement.innerHTML = newTitle;
+    const script = document.createElement("script");
+    script.src = "https://platform.twitter.com/widgets.js";
+    script.async = true;
+    document.getElementsByTagName("head")[0].appendChild(script);
+    return;
+  }
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
   const oldTitle = titleElement.textContent?.replace("...", "") || "";
   if (newTitle.length < oldTitle.length) {

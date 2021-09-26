@@ -223,7 +223,7 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
       return undefined;
     }
     const dom = domParser.parseFromString(j.html, "text/html");
-    return dom.documentElement.textContent || undefined;
+    return dom.documentElement.outerHTML || undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getTwitterTitle error", err, urlString);
