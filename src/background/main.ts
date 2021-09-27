@@ -190,8 +190,8 @@ const twitterOembed = t.type({
   html: t.string,
 });
 
-/** Twitterはブラウザ向けにはSSRしないため、専用のAPIを使ってタイトルを全取得します。 */
-async function getTwitterTitle(urlString: string): Promise<string | undefined> {
+/** Twitterはブラウザ向けにはSSRしないため、専用のAPIを使ってページを埋め込みます。 */
+async function getTwitterEmbed(urlString: string): Promise<string | undefined> {
   try {
     const url = new URL(urlString);
     // TwitterのURLやツイートのURLじゃない場合は`undefined`を返します。
@@ -222,11 +222,10 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     if (!twitterOembed.is(j)) {
       return undefined;
     }
-    const dom = domParser.parseFromString(j.html, "text/html");
-    return dom.documentElement.outerHTML || undefined;
+    return j.html;
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error("getTwitterTitle error", err, urlString);
+    console.error("getTwitterEmbed error", err, urlString);
     return undefined;
   }
 }
@@ -284,7 +283,7 @@ async function listener(message: unknown): Promise<string | undefined> {
   const url = message;
   const cacheTitle = await getTitleCache(url);
   if (cacheTitle == null) {
-    const title = (await getTwitterTitle(url)) || (await getHtmlTitle(url));
+    const title = (await getTwitterEmbed(url)) || (await getHtmlTitle(url));
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
