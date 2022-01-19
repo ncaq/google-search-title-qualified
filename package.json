@@ -18,7 +18,6 @@
     "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "devDependencies": {
-    "@mysticatea/eslint-plugin": "^13.0.0",
     "@types/encoding-japanese": "^1.0.17",
     "@types/node": "^16.7.10",
     "@types/node-fetch": "^2.5.10",
