@@ -6,9 +6,7 @@ import { replaceLinkUrls } from "./url";
  * Googleの仕様変更に一番左右されそうな部分。
  */
 function selectLinkElements(el: Element): Element[] {
-  return Array.from(
-    el.querySelectorAll('.tF2Cxc .yuRUbf a[href^="http"]:not(.fl)')
-  );
+  return Array.from(el.querySelectorAll('.g .yuRUbf a[href^="http"]:not(.fl)'));
 }
 
 /** エントリーポイント。 */
