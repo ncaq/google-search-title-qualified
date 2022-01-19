@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
-    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox78 --minify src/background/main.ts src/content/main.ts",
+    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox91 --minify src/background/main.ts src/content/main.ts",
     "fix": "FORCE_COLOR=1 run-p --print-label fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
@@ -18,26 +18,25 @@
     "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "devDependencies": {
-    "@mysticatea/eslint-plugin": "^13.0.0",
     "@types/encoding-japanese": "^1.0.17",
     "@types/node": "^16.7.10",
     "@types/node-fetch": "^2.5.10",
     "@types/punycode": "^2.1.0",
     "@types/webextension-polyfill": "^0.8.0",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
     "chrome-webstore-upload-cli": "^2.0.1",
-    "esbuild": "^0.12.25",
-    "eslint": "^7.25.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
+    "esbuild": "^0.14.11",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "ts-node": "^10.2.1",
     "typescript": "^4.2.4",
-    "web-ext": "^6.1.0",
-    "web-ext-submit": "^6.1.0"
+    "web-ext": "^6.6.0",
+    "web-ext-submit": "^6.6.0"
   },
   "dependencies": {
     "async-sema": "^3.1.1",
