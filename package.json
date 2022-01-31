@@ -15,7 +15,7 @@
     "lint:web-ext": "web-ext lint",
     "package": "rm -rf dist/ && yarn build && web-ext build --config web-ext-config.js",
     "start": "web-ext run --firefox-profile google-search-title-qualified",
-    "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox78 --sourcemap src/background/main.ts src/content/main.ts"
+    "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox91 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "devDependencies": {
     "@types/encoding-japanese": "^1.0.17",
