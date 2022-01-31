@@ -18,7 +18,7 @@ function replace(urlString: string, link: Element): void {
   // 一部だけ入力しても問題ないようです。
   const pathAndQuery = decodeURI(url.pathname + url.search);
   // URLが結構長い場合改行が発生してレイアウトがメチャクチャになる可能性が高いため書き換えません。
-  if (stringWidth(origin + pathAndQuery) >= 80) {
+  if (stringWidth(origin + pathAndQuery) >= 70) {
     return;
   }
   // aの直下ではない部分のURLテキストを書き換えないと中途半端な書き換えになってしまうので、親の要素以下のciteを全書き換え。
