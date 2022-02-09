@@ -73,8 +73,8 @@ function clearOldCacheFloating(): void {
 
 // 起動時にキャッシュ削除。
 clearOldCacheFloating();
-// 一時間ごとにキャッシュ削除。
-setInterval(clearOldCacheFloating, 3600000);
+// 1日ごとにキャッシュ削除。
+setInterval(clearOldCacheFloating, 24 * 60 * 60 * 1000);
 
 /** この拡張機能が対応するエンコーディング一覧です。 */
 const encodings = ["UTF8", "SJIS", "EUCJP"] as const;
