@@ -223,6 +223,14 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
       return undefined;
     }
     const dom = domParser.parseFromString(j.html, "text/html");
+    // Twitterは改行などが反映されないと少し見苦しいので、
+    // ちょっとした整形をする。
+    // 本当はスニペットとして埋め込みたいのだが、
+    // 外部コードを注入する拡張機能はポリシー的に弾かれるだろう。
+    // 非破壊的に構築する方法が今ひとつ分からなかった、すぐに関数を離れるから問題ないだろう。
+    Array.from(dom.querySelectorAll("br, p")).forEach((el) =>
+      el.appendChild(document.createTextNode("\n"))
+    );
     return dom.documentElement.textContent || undefined;
   } catch (err) {
     // eslint-disable-next-line no-console

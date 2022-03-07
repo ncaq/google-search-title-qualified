@@ -25,6 +25,9 @@ async function replace(url: string, link: Element): Promise<void> {
   if (titleElement == null) {
     throw new Error("titleElement is null");
   }
+  if (!(titleElement instanceof HTMLElement)) {
+    throw new Error("titleElement is not HTMLElement");
+  }
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
   const oldTitle = titleElement.textContent?.replace("...", "") || "";
   if (newTitle.length < oldTitle.length) {
@@ -39,7 +42,8 @@ async function replace(url: string, link: Element): Promise<void> {
   if (newTitle.length > 500) {
     return;
   }
-  titleElement.textContent = newTitle;
+  // 改行コードを反映させたいのでtextContentではなくinnerTextを使って代入する。
+  titleElement.innerText = newTitle;
 }
 
 /**
