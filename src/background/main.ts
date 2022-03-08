@@ -285,14 +285,18 @@ async function listener(message: unknown): Promise<string | undefined> {
       `message is not string, is ${typeof message}: ${JSON.stringify(message)}`
     );
   }
+  const url = message;
   // PDFは読み込まない
-  if (message.endsWith(".pdf")) {
+  if (url.endsWith(".pdf")) {
     return undefined;
   }
-  const url = message;
   const cacheTitle = await getTitleCache(url);
   if (cacheTitle == null) {
-    const title = (await getTwitterTitle(url)) || (await getHtmlTitle(url));
+    // TwitterのAPIかHTMLのtitleタグを取得。
+    const title =
+      (await getTwitterTitle(url)) ||
+      // innerTextなどで代入されても大丈夫なようにtrimを行う。
+      (await getHtmlTitle(url))?.trim();
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
