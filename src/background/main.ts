@@ -260,14 +260,14 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     }
     // UTF-8の場合変換は必要ありません。
     if (encoding === "UTF8") {
-      return dom.querySelector("title")?.textContent || undefined;
+      return dom.querySelector("title")?.textContent?.trim() || undefined;
     }
     // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
     if (["SJIS", "EUCJP"].includes(encoding)) {
       return encodingJapaneseTitle(
         new Uint8Array(await blob.arrayBuffer()),
         encoding
-      );
+      )?.trim();
     }
     return undefined;
   } catch (err) {
@@ -293,10 +293,7 @@ async function listener(message: unknown): Promise<string | undefined> {
   const cacheTitle = await getTitleCache(url);
   if (cacheTitle == null) {
     // TwitterのAPIかHTMLのtitleタグを取得。
-    const title =
-      (await getTwitterTitle(url)) ||
-      // innerTextなどで代入されても大丈夫なようにtrimを行う。
-      (await getHtmlTitle(url))?.trim();
+    const title = (await getTwitterTitle(url)) || (await getHtmlTitle(url));
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
