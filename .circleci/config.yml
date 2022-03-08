@@ -24,63 +24,9 @@ jobs:
           key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-  deploy-firefox:
-    executor: nodejs
-    steps:
-      # lintと作業内容をディレクトリごとにスマートに共有する方法がよく分かってないので別個になっています。
-      - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-{{ checksum "package.json" }}-
-      - run: yarn install --frozen-lockfile
-      - run: yarn package
-      - run: yarn web-ext-submit --config web-ext-config.js
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-  deploy-chrome:
-    executor: nodejs
-    steps:
-      - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
-            - v1-yarn-{{ checksum "package.json" }}-
-      - run: yarn install --frozen-lockfile
-      - run: yarn package
-      - run: yarn chrome-webstore-upload publish --source web-ext-artifacts/google-search-title-qualified.zip --extension-id bjcnnhojddnonjmhlpdjcdcfmofliagb
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: v1-yarn-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
 
 workflows:
   version: 2
   lint-deploy:
     jobs:
-      - lint:
-          filters:
-            tags:
-              only: /^v.*/
-      - deploy-firefox:
-          requires:
-            - lint
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - deploy-chrome:
-          requires:
-            - lint
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+      - lint
