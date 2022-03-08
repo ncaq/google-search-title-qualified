@@ -292,7 +292,11 @@ async function listener(message: unknown): Promise<string | undefined> {
   }
   const cacheTitle = await getTitleCache(url);
   if (cacheTitle == null) {
-    const title = (await getTwitterTitle(url)) || (await getHtmlTitle(url));
+    // TwitterのAPIかHTMLのtitleタグを取得。
+    const title =
+      (await getTwitterTitle(url)) ||
+      // innerTextなどで代入されても大丈夫なようにtrimを行う。
+      (await getHtmlTitle(url))?.trim();
     // あえてPromiseの終了を待ちません。
     saveCache(url, title).catch((err) => {
       // eslint-disable-next-line no-console
