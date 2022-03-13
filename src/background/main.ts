@@ -244,7 +244,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
   try {
     // HTMLを取得、パースして結果を返す。
     // 結果をまとめて加工したいため、内部関数に分ける。
-    async function getText() {
+    const getText = async () => {
       const response = await fetchPage(url);
       if (!response.ok) {
         throw new Error(
@@ -273,7 +273,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
         );
       }
       return undefined;
-    }
+    };
     // titleソースコード周囲にある空白は除去。
     // 改行はある程度は論理的な分割だと思うので許容するが、
     // 複数あるのは単にシステムの都合と考えて1つにまとめる。
