@@ -18,6 +18,7 @@ module.exports = {
   ],
   rules: {
     curly: ["error", "all"],
+    "@typescript-eslint/return-await": ["error", "in-try-catch"],
     // importは同じレイヤーならアルファベット順に
     "import/order": ["error", { alphabetize: { order: "asc" } }],
     "import/prefer-default-export": "off",

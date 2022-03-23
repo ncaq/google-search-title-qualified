@@ -242,34 +242,42 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
 /** URLからHTMLを取得解析してタイトルを取得します */
 async function getHtmlTitle(url: string): Promise<string | undefined> {
   try {
-    const response = await fetchPage(url);
-    if (!response.ok) {
-      throw new Error(
-        `${url}: response is not ok ${JSON.stringify(response.statusText)}`
-      );
-    }
-    // encodingJapaneseはstringに完全になってないArrayを要求するため、blobでレスポンスを消費します。
-    const blob = await response.blob();
-    const text = await blob.text();
-    const dom = domParser.parseFromString(text, "text/html");
-    // エンコードを推定します。
-    const encoding = detectEncoding(response, dom);
-    // エンコードを取得できなかったら無を返します。
-    if (encoding == null) {
+    // HTMLを取得、パースして結果を返す。
+    // 結果をまとめて加工したいため、内部関数に分ける。
+    const getText = async () => {
+      const response = await fetchPage(url);
+      if (!response.ok) {
+        throw new Error(
+          `${url}: response is not ok ${JSON.stringify(response.statusText)}`
+        );
+      }
+      // encodingJapaneseはstringに完全になってないArrayを要求するため、blobでレスポンスを消費します。
+      const blob = await response.blob();
+      const text = await blob.text();
+      const dom = domParser.parseFromString(text, "text/html");
+      // エンコードを推定します。
+      const encoding = detectEncoding(response, dom);
+      // エンコードを取得できなかったら無を返します。
+      if (encoding == null) {
+        return undefined;
+      }
+      // UTF-8の場合変換は必要ありません。
+      if (encoding === "UTF8") {
+        return dom.querySelector("title")?.textContent || undefined;
+      }
+      // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
+      if (["SJIS", "EUCJP"].includes(encoding)) {
+        return encodingJapaneseTitle(
+          new Uint8Array(await blob.arrayBuffer()),
+          encoding
+        );
+      }
       return undefined;
-    }
-    // UTF-8の場合変換は必要ありません。
-    if (encoding === "UTF8") {
-      return dom.querySelector("title")?.textContent?.trim() || undefined;
-    }
-    // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
-    if (["SJIS", "EUCJP"].includes(encoding)) {
-      return encodingJapaneseTitle(
-        new Uint8Array(await blob.arrayBuffer()),
-        encoding
-      )?.trim();
-    }
-    return undefined;
+    };
+    // titleソースコード周囲にある空白は除去。
+    // 改行はある程度は論理的な分割だと思うので許容するが、
+    // 複数あるのは単にシステムの都合と考えて1つにまとめる。
+    return (await getText())?.trim()?.replaceAll(/\n+/g, "\n");
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getHtmlTitle error", err, url);
