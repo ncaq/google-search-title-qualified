@@ -275,9 +275,9 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       return undefined;
     };
     // titleソースコード周囲にある空白は除去。
-    // 改行はある程度は論理的な分割だと思うので許容するが、
-    // 複数あるのは単にシステムの都合と考えて1つにまとめる。
-    return (await getText())?.trim()?.replaceAll(/\n+/g, "\n");
+    // 改行は論理的な分割かもしれないし、
+    // HTMLソースの幅の問題かもしれないので空白に変換する。
+    return (await getText())?.trim()?.replaceAll(/\n+/g, " ");
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getHtmlTitle error", err, url);
