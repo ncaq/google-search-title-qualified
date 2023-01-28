@@ -11,9 +11,14 @@ const ignoreFiles = dir.filter(
 );
 
 module.exports = {
+  verbose: true,
   build: {
     overwriteDest: true,
     filename: "google-search-title-qualified.zip",
   },
   ignoreFiles,
+  run: {
+    devtools: true,
+    firefoxProfile: "google-search-title-qualified",
+  },
 };
