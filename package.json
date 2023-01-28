@@ -14,7 +14,7 @@
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint",
     "package": "rm -rf dist/ && yarn build && web-ext build --config web-ext-config.js",
-    "start": "web-ext run --firefox-profile google-search-title-qualified",
+    "start": "web-ext run",
     "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox102 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "devDependencies": {

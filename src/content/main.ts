@@ -2,11 +2,30 @@ import { replaceLinkTitles } from "./title";
 import { replaceLinkUrls } from "./url";
 
 /**
+ * CSSセレクタで気をつけていてもどうしてもGoogleのwebキャッシュなど不要なURLが集まってしまうのでフィルタリングをかけます。
+ */
+function isValidURL(el: Element): boolean {
+  const href = el.getAttribute("href");
+  if (href == null) {
+    return false;
+  }
+  // 文字列をURLにしたり戻したりして無駄な気がしますが、
+  // 要素の書き換えのためにElement自体を渡さないといけない場面が多すぎるので仕方がない。
+  const url = new URL(href);
+  if (url.hostname === "webcache.googleusercontent.com") {
+    return false;
+  }
+  return true;
+}
+
+/**
  * 置き換える対象の検索結果要素一覧を取得します。
  * Googleの仕様変更に一番左右されそうな部分。
  */
 function selectLinkElements(el: Element): Element[] {
-  return Array.from(el.querySelectorAll('.g .yuRUbf a[href^="http"]:not(.fl)'));
+  return Array.from(
+    el.querySelectorAll('.g .yuRUbf a[href^="http"]:not(.fl)')
+  ).filter(isValidURL);
 }
 
 /** エントリーポイント。 */
