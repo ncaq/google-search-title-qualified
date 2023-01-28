@@ -79,7 +79,7 @@ setInterval(clearOldCacheFloating, 24 * 60 * 60 * 1000);
 /** この拡張機能が対応するエンコーディング一覧です。 */
 const encodings = ["UTF8", "SJIS", "EUCJP"] as const;
 /** 対応エンコードを型付けします。 */
-type Encoding = typeof encodings[number];
+type Encoding = (typeof encodings)[number];
 
 /**
  * エンコードを判定するための正規表現マップです。
@@ -92,7 +92,7 @@ const encodingsRegex: Map<Encoding, RegExp> = new Map([
   ["EUCJP", /EUC[-_]JP/i],
 ]);
 
-/** エンコーディング判定用のの正規表現に一致するか判断して、最初に一致したものを返します。 */
+/** エンコーディング判定用の正規表現に一致するか判断して、最初に一致したものを返します。 */
 function testEncoding(source: string): Encoding | undefined {
   return encodings.find((encoding) => {
     const re = encodingsRegex.get(encoding);

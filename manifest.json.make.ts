@@ -1,5 +1,4 @@
 import fs from "fs/promises";
-import fetch from "node-fetch";
 
 /** Googleの公式情報から検索ドメインを取ってきます。 */
 async function selectGoogleSearchUrls(): Promise<string[]> {
@@ -22,10 +21,10 @@ async function writeManifestJson(): Promise<void> {
         version: "0.12.0",
         description:
           "Google will omit the title of the web page. With this add-on, the original title is used as much as possible.",
-        applications: {
+        browser_specific_settings: {
           gecko: {
             id: "google-search-title-qualified@ncaq.net",
-            strict_min_version: "91.0",
+            strict_min_version: "102.0",
           },
         },
 
