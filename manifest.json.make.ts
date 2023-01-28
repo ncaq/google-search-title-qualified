@@ -18,7 +18,7 @@ async function writeManifestJson(): Promise<void> {
       {
         manifest_version: 2,
         name: "google-search-title-qualified",
-        version: "0.12.0",
+        version: "0.13.0",
         description:
           "Google will omit the title of the web page. With this add-on, the original title is used as much as possible.",
         browser_specific_settings: {
