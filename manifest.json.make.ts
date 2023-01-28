@@ -21,7 +21,7 @@ async function writeManifestJson(): Promise<void> {
         version: "0.12.0",
         description:
           "Google will omit the title of the web page. With this add-on, the original title is used as much as possible.",
-        applications: {
+        browser_specific_settings: {
           gecko: {
             id: "google-search-title-qualified@ncaq.net",
             strict_min_version: "102.0",
