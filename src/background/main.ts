@@ -92,7 +92,7 @@ const encodingsRegex: Map<Encoding, RegExp> = new Map([
   ["EUCJP", /EUC[-_]JP/i],
 ]);
 
-/** エンコーディング判定用のの正規表現に一致するか判断して、最初に一致したものを返します。 */
+/** エンコーディング判定用の正規表現に一致するか判断して、最初に一致したものを返します。 */
 function testEncoding(source: string): Encoding | undefined {
   return encodings.find((encoding) => {
     const re = encodingsRegex.get(encoding);
