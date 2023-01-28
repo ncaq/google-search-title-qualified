@@ -79,7 +79,7 @@ setInterval(clearOldCacheFloating, 24 * 60 * 60 * 1000);
 /** この拡張機能が対応するエンコーディング一覧です。 */
 const encodings = ["UTF8", "SJIS", "EUCJP"] as const;
 /** 対応エンコードを型付けします。 */
-type Encoding = typeof encodings[number];
+type Encoding = (typeof encodings)[number];
 
 /**
  * エンコードを判定するための正規表現マップです。
