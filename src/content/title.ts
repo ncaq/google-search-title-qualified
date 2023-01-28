@@ -1,4 +1,42 @@
+import { Sema } from "async-sema";
 import browser from "webextension-polyfill";
+
+/**
+ * 求められるままネットワークコネクションを開きまくるとブラウザの動作に支障が出ることと、
+ * 閉じたページのタイトルを取得し続けるのは無駄なので、
+ * ページ単位で制限を設けます。
+ */
+const fetchSema = new Sema(3);
+
+/**
+ * ページ内容のタイトルをセマフォの制限付きでbackgroundから取得します。
+ * `try`に伴った`let`を書きたくなかったので分けました。
+ */
+async function fetchBackground(url: string): Promise<string | undefined> {
+  await fetchSema.acquire();
+  try {
+    const newTitle: unknown = await browser.runtime.sendMessage(url);
+    // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
+    if (newTitle == null) {
+      return undefined;
+    }
+    // タイトルがstringではない場合プログラミングミスなので例外を投げます。
+    if (typeof newTitle !== "string") {
+      throw new Error(
+        `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
+          newTitle
+        )}`
+      );
+    }
+    return newTitle;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("fetchBackground is error.", err);
+    return undefined;
+  } finally {
+    fetchSema.release();
+  }
+}
 
 /**
  * ページ内容のタイトルをbackgroundから取得して、取得出来たものにタイトルを書き換えます。
@@ -6,19 +44,11 @@ import browser from "webextension-polyfill";
  * @param link - 検索結果部分のHTML要素
  */
 async function replace(url: string, link: Element): Promise<void> {
-  // backgroundから未省略のタイトルを取得します
-  const newTitle: unknown = await browser.runtime.sendMessage(url);
+  // backgroundから未省略のタイトルを取得します。
+  const newTitle = await fetchBackground(url);
   // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
   if (newTitle == null) {
     return;
-  }
-  // タイトルがstringではない場合プログラミングミスなので例外を投げます。
-  if (typeof newTitle !== "string") {
-    throw new Error(
-      `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
-        newTitle
-      )}`
-    );
   }
   // 該当の検索結果からタイトル部分を表示するDOMを取得します。
   const titleElement = link.querySelector(".LC20lb");
@@ -31,7 +61,7 @@ async function replace(url: string, link: Element): Promise<void> {
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
   const oldTitle = titleElement.textContent?.replace("...", "") || "";
   if (newTitle.length < oldTitle.length) {
-    // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません
+    // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません。
     return;
   }
   // リンクが異常に長いことがあります。

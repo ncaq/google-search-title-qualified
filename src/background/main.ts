@@ -154,13 +154,18 @@ function encodingJapaneseTitle(
   return dom.querySelector("title")?.textContent || undefined;
 }
 
-/** fetchコネクションを3つに制限します。 */
-const fetchSema = new Sema(3);
+/**
+ * 求められるままネットワークコネクションを開きまくるとブラウザの動作に支障が出るため、
+ * セマフォである程度制限します。
+ * ページを複数開いても問題ないように、
+ * ページ単体の制限よりある程度余裕を持たせます。
+ */
+const fetchSema = new Sema(3 * 3);
 
 /** ネットワーク帯域を利用する関数を明示化してまとめます。 */
 async function fetchPage(url: string): Promise<Response> {
+  await fetchSema.acquire();
   try {
-    await fetchSema.acquire();
     const abortController = new AbortController();
     // ネットワーク通信は15秒でタイムアウト。
     // やたらと時間がかかるサイトはどうせろくでもないことが多い。
