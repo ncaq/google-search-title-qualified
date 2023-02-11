@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
-    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox102 --minify src/background/main.ts src/content/main.ts",
+    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox102 src/background/main.ts src/content/main.ts",
     "fix": "run-p --print-label fix:*",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
