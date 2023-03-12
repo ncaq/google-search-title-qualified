@@ -1,5 +1,4 @@
 import { replaceLinkTitles } from "./title";
-import { replaceLinkUrls } from "./url";
 
 /**
  * CSSセレクタで気をつけていてもどうしてもGoogleのwebキャッシュなど不要なURLが集まってしまうのでフィルタリングをかけます。
@@ -30,10 +29,7 @@ function selectLinkElements(el: Element): Element[] {
 
 /** エントリーポイント。 */
 async function main(el: Element): Promise<void[]> {
-  const links = selectLinkElements(el);
-  const titleP = replaceLinkTitles(links);
-  replaceLinkUrls(links);
-  return titleP;
+  return replaceLinkTitles(selectLinkElements(el));
 }
 
 // エントリーポイントを実行します。
