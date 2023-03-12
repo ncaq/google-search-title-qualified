@@ -10,7 +10,7 @@
     "fix:prettier": "yarn lint:prettier --write",
     "lint": "run-p --print-label lint:*",
     "lint:eslint": "eslint --ignore-path .gitignore --cache --ext .ts --ext .tsx .",
-    "lint:prettier": "prettier --ignore-path .gitignore --check **/*.ts",
+    "lint:prettier": "prettier --ignore-path .gitignore --ignore-unknown --check '**/*.{js,jsx,ts,tsx,json,html,css,less,sass,scss,yml,yaml}'",
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint",
     "package": "rm -rf dist/ && yarn build && web-ext build",
