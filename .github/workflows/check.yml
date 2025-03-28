@@ -1,36 +1,17 @@
-name: Lint
+name: check
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
   check:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
         with:
-          node-version: '22.13'
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run lint
-        run: yarn lint
-
-      - name: Save Yarn cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version-file: package.json
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+      - run: yarn lint
