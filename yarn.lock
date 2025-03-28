@@ -456,10 +456,10 @@
   resolved "https://registry.yarnpkg.com/@types/doctrine/-/doctrine-0.0.9.tgz#d86a5f452a15e3e3113b99e39616a9baa0f9863f"
   integrity sha512-eOIHzCUSH7SMfonMG1LsC2f8vxBFtho6NGBznK41R84YzPuvSBzrhEps33IsQiOW9+VL6NQ9DbjQJznk/S4uRA==
 
-"@types/encoding-japanese@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/encoding-japanese/-/encoding-japanese-2.0.1.tgz#e8d4aa894e99aa195ce7dc792c54a6c61d019f8a"
-  integrity sha512-JaCXs2HLniKY8xXeWlg8MAtd4iKhNh8LwutW3yDMWY4usEdTZ2va1x9kd8V3179OAIUTgGQVA63XJrHettpVFQ==
+"@types/encoding-japanese@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/encoding-japanese/-/encoding-japanese-2.2.1.tgz#4aa2b89e6a611a7b35ac54e15abb9c388b8d280d"
+  integrity sha512-6jjepuTusvySxMLP7W6usamlbgf0F4sIDvm7EzYePjLHY7zWUv4yz2PLUnu0vuNVtXOTLu2cRdFcDg40J5Owsw==
 
 "@types/estree@^1.0.6":
   version "1.0.7"
@@ -1321,10 +1321,10 @@ emoji-regex@^8.0.0:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
   integrity sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==
 
-encoding-japanese@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/encoding-japanese/-/encoding-japanese-2.0.0.tgz#fa0226e5469e7b5b69a04fea7d5481bd1fa56936"
-  integrity sha512-++P0RhebUC8MJAwJOsT93dT+5oc5oPImp1HubZpAuCZ5kTLnhuuBhKHj2jJeO/Gj93idPBWmIuQ9QWMe5rX3pQ==
+encoding-japanese@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/encoding-japanese/-/encoding-japanese-2.2.0.tgz#0ef2d2351250547f432a2dd155453555c16deb59"
+  integrity sha512-EuJWwlHPZ1LbADuKTClvHtwbaFn4rOD+dRAbWysqEOXRc2Uui0hJInNJrsdH0c+OhJA4nrCBdSkW4DD5YxAo6A==
 
 entities@^4.2.0, entities@^4.3.0:
   version "4.3.0"

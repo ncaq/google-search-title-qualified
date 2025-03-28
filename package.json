@@ -21,7 +21,7 @@
     "async-sema": "^3.1.1",
     "date-fns": "^2.29.3",
     "dexie": "^3.2.3",
-    "encoding-japanese": "^2.0.0",
+    "encoding-japanese": "^2.2.0",
     "events": "^3.3.0",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.22",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.7",
     "@eslint/js": "^9.23.0",
-    "@types/encoding-japanese": "^2.0.1",
+    "@types/encoding-japanese": "^2.2.1",
     "@types/node": "^22.13.14",
     "@types/webextension-polyfill": "^0.10.0",
     "esbuild": "^0.25.1",
