@@ -85,7 +85,8 @@ async function replaceLinkTitle(link: Element): Promise<void> {
     if (href == null) {
       throw new Error("link don't have href");
     }
-    return await replace(href, link);
+    await replace(href, link);
+    return;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("replaceLinkTitle is error.", err, link);

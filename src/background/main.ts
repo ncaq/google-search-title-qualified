@@ -6,7 +6,7 @@ import * as t from "io-ts";
 import browser from "webextension-polyfill";
 
 /** IndexedDBに格納するエントリ */
-type TitleCache = {
+interface TitleCache {
   /**
    * URLをユニークなプライマリキーにすることで変換する手間を節約。
    * ユニークキーから簡単に単一の値を取得する方法はDexieでは見つかりませんでした。
@@ -23,7 +23,7 @@ type TitleCache = {
    * 生成日を保存してインデックスしておきます。
    */
   createdAt: Date;
-};
+}
 
 /** 全体データベース。 */
 const db = new Dexie("GSTQDatabase");
@@ -86,7 +86,7 @@ type Encoding = (typeof encodings)[number];
  * これにより、雑に文字コード推定を行います。
  * 本当はブラウザの自動判定機能が使いたいです、誰か方法を教えてください。
  */
-const encodingsRegex: Map<Encoding, RegExp> = new Map([
+const encodingsRegex = new Map<Encoding, RegExp>([
   ["UTF8", /UTF[-_]8/i],
   ["SJIS", /Shift[-_]JIS/i],
   ["EUCJP", /EUC[-_]JP/i],
@@ -169,7 +169,9 @@ async function fetchPage(url: string): Promise<Response> {
     const abortController = new AbortController();
     // ネットワーク通信は15秒でタイムアウト。
     // やたらと時間がかかるサイトはどうせろくでもないことが多い。
-    const timeout = setTimeout(() => abortController.abort(), 15 * 1000);
+    const timeout = setTimeout(() => {
+      abortController.abort();
+    }, 15 * 1000);
     try {
       return await fetch(url, {
         // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
@@ -282,7 +284,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     // titleソースコード周囲にある空白は除去。
     // 改行は論理的な分割かもしれないし、
     // HTMLソースの幅の問題かもしれないので空白に変換する。
-    return (await getText())?.trim()?.replaceAll(/\n+/g, " ");
+    return (await getText())?.trim().replaceAll(/\n+/g, " ");
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getHtmlTitle error", err, url);
