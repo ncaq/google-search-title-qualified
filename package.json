@@ -5,15 +5,15 @@
   "scripts": {
     "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
     "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox102 src/background/main.ts src/content/main.ts",
-    "fix": "FORCE_COLOR=1 run-p --print-label --continue-on-error fix:*",
-    "fix:eslint": "yarn lint:eslint --fix",
-    "fix:prettier": "yarn lint:prettier --write",
-    "lint": "FORCE_COLOR=1 run-p --print-label --continue-on-error lint:*",
+    "fix": "FORCE_COLOR=1 run-p --print-label --continue-on-error 'fix:*'",
+    "fix:eslint": "yarn 'lint:eslint' --fix",
+    "fix:prettier": "yarn 'lint:prettier' --write",
+    "lint": "FORCE_COLOR=1 run-p --print-label --continue-on-error 'lint:*'",
     "lint:eslint": "eslint --max-warnings 0",
     "lint:prettier": "prettier --ignore-path .gitignore --ignore-unknown --check '**/*.{js,jsx,ts,tsx,json,html,css,less,sass,scss,yml,yaml}'",
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint",
-    "package": "rm -rf dist/ && yarn build && web-ext build",
+    "package": "rm -rf dist/ && yarn 'build' && web-ext build",
     "start": "web-ext run",
     "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox102 --sourcemap src/background/main.ts src/content/main.ts"
   },
@@ -45,9 +45,9 @@
     "typescript-eslint": "^8.28.0",
     "web-ext": "^8.5.0"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "packageManager": "yarn@4.8.0+sha512.85ec3149b1ec48f47c2690e13b29197a8a84b09c2c936cc596dddfb49c517e3bc3b1881ec52b5d35ca4b7c437c3f0daae3a80e39438c93bbcc5fcece2df5f15a",
   "engines": {
     "node": ">=22.13",
-    "yarn": ">=1.22.22"
+    "yarn": ">=4.8.0"
   }
 }
