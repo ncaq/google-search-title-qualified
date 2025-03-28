@@ -23,7 +23,7 @@ function isValidURL(el: Element): boolean {
  */
 function selectLinkElements(el: Element): Element[] {
   return Array.from(
-    el.querySelectorAll('.g .yuRUbf a[href^="http"]:not(.fl)')
+    el.querySelectorAll('.yuRUbf a[href^="http"]:not(.fl)')
   ).filter(isValidURL);
 }
 
