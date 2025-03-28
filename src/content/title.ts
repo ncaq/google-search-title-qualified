@@ -1,5 +1,5 @@
 import { Sema } from "async-sema";
-import browser from "webextension-polyfill";
+import { runtime } from "webextension-polyfill";
 
 /**
  * 求められるままネットワークコネクションを開きまくるとブラウザの動作に支障が出ることと、
@@ -15,7 +15,7 @@ const fetchSema = new Sema(3);
 async function fetchBackground(url: string): Promise<string | undefined> {
   await fetchSema.acquire();
   try {
-    const newTitle: unknown = await browser.runtime.sendMessage(url);
+    const newTitle: unknown = await runtime.sendMessage(url);
     // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
     if (newTitle == null) {
       return undefined;

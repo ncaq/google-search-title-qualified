@@ -1,9 +1,9 @@
 import { Sema } from "async-sema";
 import sub from "date-fns/sub";
 import { Dexie } from "dexie";
-import encodingJapanese from "encoding-japanese";
+import { convert } from "encoding-japanese";
 import * as t from "io-ts";
-import browser from "webextension-polyfill";
+import { runtime } from "webextension-polyfill";
 
 /** IndexedDBに格納するエントリ */
 interface TitleCache {
@@ -143,7 +143,7 @@ function encodingJapaneseTitle(
   jp: Uint8Array,
   encoding: Encoding
 ): string | undefined {
-  const utf8 = encodingJapanese.convert(jp, {
+  const utf8 = convert(jp, {
     to: "UTF8",
     from: encoding,
   });
@@ -319,4 +319,4 @@ async function listener(message: unknown): Promise<string | undefined> {
   return cacheTitle;
 }
 
-browser.runtime.onMessage.addListener(listener);
+runtime.onMessage.addListener(listener);
