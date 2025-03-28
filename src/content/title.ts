@@ -59,7 +59,7 @@ async function replace(url: string, link: Element): Promise<void> {
     throw new Error("titleElement is not HTMLElement");
   }
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
-  const oldTitle = titleElement.textContent?.replace("...", "") || "";
+  const oldTitle = titleElement.textContent?.replace("...", "") ?? "";
   if (newTitle.length < oldTitle.length) {
     // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません。
     return;
@@ -97,6 +97,6 @@ async function replaceLinkTitle(link: Element): Promise<void> {
 /**
  * 複数の要素を順不同で置き換えます。
  */
-export async function replaceLinkTitles(links: Element[]): Promise<void[]> {
-  return Promise.all(links.map((link) => replaceLinkTitle(link)));
+export async function replaceLinkTitles(links: Element[]): Promise<void> {
+  await Promise.all(links.map((link) => replaceLinkTitle(link)));
 }

@@ -28,12 +28,12 @@ function selectLinkElements(el: Element): Element[] {
 }
 
 /** エントリーポイント。 */
-async function main(el: Element): Promise<void[]> {
+async function main(el: Element): Promise<void> {
   return replaceLinkTitles(selectLinkElements(el));
 }
 
 // エントリーポイントを実行します。
-main(document.documentElement).catch((e) => {
+main(document.documentElement).catch((e: unknown) => {
   throw e;
 });
 
@@ -46,7 +46,7 @@ document.addEventListener("AutoPagerize_DOMNodeInserted", (event) => {
       )}`
     );
   }
-  main(event.target).catch((e) => {
+  main(event.target).catch((e: unknown) => {
     throw e;
   });
 });
