@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/encoding-japanese": "^2.0.1",
-    "@types/node": "^18.11.18",
+    "@types/node": "^22.13.14",
     "@types/webextension-polyfill": "^0.10.0",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
