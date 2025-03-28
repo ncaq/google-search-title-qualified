@@ -45,7 +45,7 @@ async function getTitleCache(url: string): Promise<string | undefined> {
 /** キャッシュを保存します。 */
 async function saveCache(
   url: string,
-  title: string | undefined
+  title: string | undefined,
 ): Promise<string> {
   return titleCacheTable.put({ url, title, createdAt: new Date() });
 }
@@ -141,7 +141,7 @@ const utf8Decoder = new TextDecoder();
 /** encoding-japaneseが対応している文字コードのページのタイトルを取得します。 */
 function encodingJapaneseTitle(
   jp: Uint8Array,
-  encoding: Encoding
+  encoding: Encoding,
 ): string | undefined {
   const utf8 = convert(jp, {
     to: "UTF8",
@@ -149,7 +149,7 @@ function encodingJapaneseTitle(
   });
   const dom = domParser.parseFromString(
     utf8Decoder.decode(new Uint8Array(utf8)),
-    "text/html"
+    "text/html",
   );
   return dom.querySelector("title")?.textContent ?? undefined;
 }
@@ -221,8 +221,8 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     if (!response.ok) {
       throw new Error(
         `${publish.href}: response is not ok ${JSON.stringify(
-          response.statusText
-        )}`
+          response.statusText,
+        )}`,
       );
     }
     const j: unknown = await response.json();
@@ -236,7 +236,7 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     // 外部コードを注入する拡張機能はポリシー的に弾かれるだろう。
     // 非破壊的に構築する方法が今ひとつ分からなかった、すぐに関数を離れるから問題ないだろう。
     Array.from(dom.querySelectorAll("br, p")).forEach((el) =>
-      el.appendChild(document.createTextNode("\n"))
+      el.appendChild(document.createTextNode("\n")),
     );
     return dom.documentElement.textContent ?? undefined;
   } catch (err) {
@@ -255,7 +255,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       const response = await fetchPage(url);
       if (!response.ok) {
         throw new Error(
-          `${url}: response is not ok ${JSON.stringify(response.statusText)}`
+          `${url}: response is not ok ${JSON.stringify(response.statusText)}`,
         );
       }
       // encodingJapaneseはstringに完全になってないArrayを要求するため、blobでレスポンスを消費します。
@@ -276,7 +276,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       if (["SJIS", "EUCJP"].includes(encoding)) {
         return encodingJapaneseTitle(
           new Uint8Array(await blob.arrayBuffer()),
-          encoding
+          encoding,
         );
       }
       return undefined;
@@ -297,7 +297,7 @@ async function listener(message: unknown): Promise<string | undefined> {
   // メッセージ内容がおかしい場合はエラー
   if (typeof message !== "string") {
     throw new Error(
-      `message is not string, is ${typeof message}: ${JSON.stringify(message)}`
+      `message is not string, is ${typeof message}: ${JSON.stringify(message)}`,
     );
   }
   const url = message;

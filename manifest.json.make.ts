@@ -46,8 +46,8 @@ async function writeManifestJson(): Promise<void> {
         ],
       },
       null,
-      2
-    )
+      2,
+    ),
   );
 }
 

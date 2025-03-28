@@ -24,8 +24,8 @@ async function fetchBackground(url: string): Promise<string | undefined> {
     if (typeof newTitle !== "string") {
       throw new Error(
         `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
-          newTitle
-        )}`
+          newTitle,
+        )}`,
       );
     }
     return newTitle;
