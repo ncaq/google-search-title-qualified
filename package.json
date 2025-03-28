@@ -23,7 +23,7 @@
     "dexie": "^3.2.3",
     "encoding-japanese": "^2.2.0",
     "events": "^3.3.0",
-    "fp-ts": "^2.13.1",
+    "fp-ts": "^2.16.9",
     "io-ts": "^2.2.22",
     "webextension-polyfill": "^0.12.0"
   },
