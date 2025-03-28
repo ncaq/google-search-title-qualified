@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/ncaq/google-search-title-qualified.svg?style=svg)](https://circleci.com/gh/ncaq/google-search-title-qualified)
+[![GitHub Actions](https://github.com/ncaq/google-search-title-qualified/actions/workflows/check.yml/badge.svg)](https://github.com/ncaq/google-search-title-qualified/actions/workflows/check.yml)
 [![Mozilla Add-on](https://img.shields.io/amo/users/google-search-title-qualified.svg)](https://addons.mozilla.org/firefox/addon/google-search-title-qualified/)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/bjcnnhojddnonjmhlpdjcdcfmofliagb.svg)](https://chrome.google.com/webstore/detail/google-search-title-quali/bjcnnhojddnonjmhlpdjcdcfmofliagb)
 
