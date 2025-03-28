@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import { includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import eslintPluginImportX from "eslint-plugin-import-x";
 import tseslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +17,23 @@ const gitignorePath = path.resolve(__dirname, ".gitignore");
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
   eslintConfigPrettier,
+  eslintPluginImportX.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.typescript,
+  {
+    rules: {
+      "import-x/order": [
+        "warn",
+        { alphabetize: { order: "asc", orderImportKind: "asc" } },
+      ],
+    },
+    settings: {
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true,
+        }),
+      ],
+    },
+  },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
