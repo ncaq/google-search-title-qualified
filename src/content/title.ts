@@ -1,5 +1,5 @@
 import { Sema } from "async-sema";
-import browser from "webextension-polyfill";
+import { runtime } from "webextension-polyfill";
 
 /**
  * 求められるままネットワークコネクションを開きまくるとブラウザの動作に支障が出ることと、
@@ -15,7 +15,7 @@ const fetchSema = new Sema(3);
 async function fetchBackground(url: string): Promise<string | undefined> {
   await fetchSema.acquire();
   try {
-    const newTitle: unknown = await browser.runtime.sendMessage(url);
+    const newTitle: unknown = await runtime.sendMessage(url);
     // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
     if (newTitle == null) {
       return undefined;
@@ -59,7 +59,7 @@ async function replace(url: string, link: Element): Promise<void> {
     throw new Error("titleElement is not HTMLElement");
   }
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
-  const oldTitle = titleElement.textContent?.replace("...", "") || "";
+  const oldTitle = titleElement.textContent?.replace("...", "") ?? "";
   if (newTitle.length < oldTitle.length) {
     // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません。
     return;
@@ -85,7 +85,8 @@ async function replaceLinkTitle(link: Element): Promise<void> {
     if (href == null) {
       throw new Error("link don't have href");
     }
-    return await replace(href, link);
+    await replace(href, link);
+    return;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("replaceLinkTitle is error.", err, link);
@@ -96,6 +97,6 @@ async function replaceLinkTitle(link: Element): Promise<void> {
 /**
  * 複数の要素を順不同で置き換えます。
  */
-export async function replaceLinkTitles(links: Element[]): Promise<void[]> {
-  return Promise.all(links.map((link) => replaceLinkTitle(link)));
+export async function replaceLinkTitles(links: Element[]): Promise<void> {
+  await Promise.all(links.map((link) => replaceLinkTitle(link)));
 }

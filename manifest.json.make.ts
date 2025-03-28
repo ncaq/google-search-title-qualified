@@ -53,7 +53,7 @@ async function writeManifestJson(): Promise<void> {
 
 // ts-nodeとかで実行させます。
 if (require.main === module) {
-  writeManifestJson().catch((e) => {
+  writeManifestJson().catch((e: unknown) => {
     throw e;
   });
 }

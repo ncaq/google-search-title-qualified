@@ -1,12 +1,12 @@
 import { Sema } from "async-sema";
 import sub from "date-fns/sub";
-import Dexie from "dexie";
-import encodingJapanese from "encoding-japanese";
+import { Dexie } from "dexie";
+import { convert } from "encoding-japanese";
 import * as t from "io-ts";
-import browser from "webextension-polyfill";
+import { runtime } from "webextension-polyfill";
 
 /** IndexedDBに格納するエントリ */
-type TitleCache = {
+interface TitleCache {
   /**
    * URLをユニークなプライマリキーにすることで変換する手間を節約。
    * ユニークキーから簡単に単一の値を取得する方法はDexieでは見つかりませんでした。
@@ -23,7 +23,7 @@ type TitleCache = {
    * 生成日を保存してインデックスしておきます。
    */
   createdAt: Date;
-};
+}
 
 /** 全体データベース。 */
 const db = new Dexie("GSTQDatabase");
@@ -65,7 +65,7 @@ async function clearOldCache(): Promise<number> {
 
 /** floating asyncでキャッシュ削除。 */
 function clearOldCacheFloating(): void {
-  clearOldCache().catch((err) => {
+  clearOldCache().catch((err: unknown) => {
     // eslint-disable-next-line no-console
     console.error("clearOldCache is error.", err);
   });
@@ -86,7 +86,7 @@ type Encoding = (typeof encodings)[number];
  * これにより、雑に文字コード推定を行います。
  * 本当はブラウザの自動判定機能が使いたいです、誰か方法を教えてください。
  */
-const encodingsRegex: Map<Encoding, RegExp> = new Map([
+const encodingsRegex = new Map<Encoding, RegExp>([
   ["UTF8", /UTF[-_]8/i],
   ["SJIS", /Shift[-_]JIS/i],
   ["EUCJP", /EUC[-_]JP/i],
@@ -96,7 +96,7 @@ const encodingsRegex: Map<Encoding, RegExp> = new Map([
 function testEncoding(source: string): Encoding | undefined {
   return encodings.find((encoding) => {
     const re = encodingsRegex.get(encoding);
-    return re != null && re.test(source);
+    return re?.test(source);
   });
 }
 
@@ -107,13 +107,13 @@ function testEncoding(source: string): Encoding | undefined {
  */
 function detectEncoding(response: Response, d: Document): Encoding | undefined {
   // 判定用の文字列を取得します。
-  const httpContentType = response.headers.get("content-type") || "";
+  const httpContentType = response.headers.get("content-type") ?? "";
   const html5Charset =
-    d.querySelector("meta[charset]")?.getAttribute("charset") || "";
+    d.querySelector("meta[charset]")?.getAttribute("charset") ?? "";
   const html4ContentType =
     d
       .querySelector('meta[http-equiv="Content-Type"]')
-      ?.getAttribute("content") || "";
+      ?.getAttribute("content") ?? "";
   // それぞれのソースから計算したエンコーディングを取得します。
   // 判定不能だったものは除外します。
   const testedEncodings = [httpContentType, html5Charset, html4ContentType]
@@ -143,7 +143,7 @@ function encodingJapaneseTitle(
   jp: Uint8Array,
   encoding: Encoding
 ): string | undefined {
-  const utf8 = encodingJapanese.convert(jp, {
+  const utf8 = convert(jp, {
     to: "UTF8",
     from: encoding,
   });
@@ -151,7 +151,7 @@ function encodingJapaneseTitle(
     utf8Decoder.decode(new Uint8Array(utf8)),
     "text/html"
   );
-  return dom.querySelector("title")?.textContent || undefined;
+  return dom.querySelector("title")?.textContent ?? undefined;
 }
 
 /**
@@ -169,7 +169,9 @@ async function fetchPage(url: string): Promise<Response> {
     const abortController = new AbortController();
     // ネットワーク通信は15秒でタイムアウト。
     // やたらと時間がかかるサイトはどうせろくでもないことが多い。
-    const timeout = setTimeout(() => abortController.abort(), 15 * 1000);
+    const timeout = setTimeout(() => {
+      abortController.abort();
+    }, 15 * 1000);
     try {
       return await fetch(url, {
         // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
@@ -236,7 +238,7 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     Array.from(dom.querySelectorAll("br, p")).forEach((el) =>
       el.appendChild(document.createTextNode("\n"))
     );
-    return dom.documentElement.textContent || undefined;
+    return dom.documentElement.textContent ?? undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getTwitterTitle error", err, urlString);
@@ -268,7 +270,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
       }
       // UTF-8の場合変換は必要ありません。
       if (encoding === "UTF8") {
-        return dom.querySelector("title")?.textContent || undefined;
+        return dom.querySelector("title")?.textContent ?? undefined;
       }
       // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
       if (["SJIS", "EUCJP"].includes(encoding)) {
@@ -282,7 +284,7 @@ async function getHtmlTitle(url: string): Promise<string | undefined> {
     // titleソースコード周囲にある空白は除去。
     // 改行は論理的な分割かもしれないし、
     // HTMLソースの幅の問題かもしれないので空白に変換する。
-    return (await getText())?.trim()?.replaceAll(/\n+/g, " ");
+    return (await getText())?.trim().replaceAll(/\n+/g, " ");
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getHtmlTitle error", err, url);
@@ -306,9 +308,9 @@ async function listener(message: unknown): Promise<string | undefined> {
   const cacheTitle = await getTitleCache(url);
   if (cacheTitle == null) {
     // TwitterのAPIかHTMLのtitleタグを取得。
-    const title = (await getTwitterTitle(url)) || (await getHtmlTitle(url));
+    const title = (await getTwitterTitle(url)) ?? (await getHtmlTitle(url));
     // あえてPromiseの終了を待ちません。
-    saveCache(url, title).catch((err) => {
+    saveCache(url, title).catch((err: unknown) => {
       // eslint-disable-next-line no-console
       console.error("saveCache is error", err, url, title);
     });
@@ -317,4 +319,4 @@ async function listener(message: unknown): Promise<string | undefined> {
   return cacheTitle;
 }
 
-browser.runtime.onMessage.addListener(listener);
+runtime.onMessage.addListener(listener);
