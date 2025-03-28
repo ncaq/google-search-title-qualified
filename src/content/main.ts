@@ -23,7 +23,7 @@ function isValidURL(el: Element): boolean {
  */
 function selectLinkElements(el: Element): Element[] {
   return Array.from(
-    el.querySelectorAll('.yuRUbf a[href^="http"]:not(.fl)')
+    el.querySelectorAll('.yuRUbf a[href^="http"]:not(.fl)'),
   ).filter(isValidURL);
 }
 
@@ -42,8 +42,8 @@ document.addEventListener("AutoPagerize_DOMNodeInserted", (event) => {
   if (!(event.target instanceof Element)) {
     throw new Error(
       `AutoPagerize_DOMNodeInserted: event.target is not Element. ${JSON.stringify(
-        event
-      )}`
+        event,
+      )}`,
     );
   }
   main(event.target).catch((e: unknown) => {
