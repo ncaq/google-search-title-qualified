@@ -3,7 +3,7 @@ version: 2.1
 executors:
   nodejs:
     docker:
-      - image: cimg/node:18.13
+      - image: cimg/node:22.13
     working_directory: ~/google-search-title-qualified
 
 jobs:
