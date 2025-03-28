@@ -1,6 +1,6 @@
 import { Sema } from "async-sema";
 import sub from "date-fns/sub";
-import Dexie from "dexie";
+import { Dexie } from "dexie";
 import encodingJapanese from "encoding-japanese";
 import * as t from "io-ts";
 import browser from "webextension-polyfill";
