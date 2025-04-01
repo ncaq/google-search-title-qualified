@@ -655,10 +655,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webextension-polyfill@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "@types/webextension-polyfill@npm:0.10.0"
-  checksum: 10c0/b1f0993e0df2cd50c72a215bd9f72ec9188e834d6f12329662ebec11c967cc61fc2136c5247050c7b5a39ed887476becfca868b90191baa0dc0a8bad6cee5a47
+"@types/webextension-polyfill@npm:^0.12.3":
+  version: 0.12.3
+  resolution: "@types/webextension-polyfill@npm:0.12.3"
+  checksum: 10c0/0f0cea5ab70a3958f7eca61168b8b431288c35ee7e8f052f5b3bf6a6aa101183aa760addd4dcf408027d558731aa8a8f107e47a373bb7c347cb7cba807fe46e6
   languageName: node
   linkType: hard
 
@@ -2703,7 +2703,7 @@ __metadata:
     "@eslint/js": "npm:^9.23.0"
     "@types/encoding-japanese": "npm:^2.2.1"
     "@types/node": "npm:^22.13.14"
-    "@types/webextension-polyfill": "npm:^0.10.0"
+    "@types/webextension-polyfill": "npm:^0.12.3"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.29.3"
     dexie: "npm:^3.2.3"
