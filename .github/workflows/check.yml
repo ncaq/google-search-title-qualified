@@ -1,5 +1,8 @@
 name: check
 
+permissions:
+  contents: read
+
 on: push
 
 jobs:
