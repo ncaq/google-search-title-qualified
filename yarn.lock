@@ -2506,10 +2506,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fp-ts@npm:^2.16.9":
-  version: 2.16.9
-  resolution: "fp-ts@npm:2.16.9"
-  checksum: 10c0/704fcc2e792bd17cb653e7b62b5d9d905c04327776df8bf2a1f67e1c6823b06c7c36036345279ac04f0b6b7214ad01f91f109f548e144c9f866a491392fbfbcc
+"fp-ts@npm:^2.16.10":
+  version: 2.16.10
+  resolution: "fp-ts@npm:2.16.10"
+  checksum: 10c0/20f75db2cecf332d7555efa6fc2774e5c2e8bde281c55e7818bfea8381c7397f7b2f0742da22593ea63d302b9be22db0670d9a37a77122c6625b954e84fd8148
   languageName: node
   linkType: hard
 
@@ -2714,7 +2714,7 @@ __metadata:
     eslint-import-resolver-typescript: "npm:^4.2.5"
     eslint-plugin-import-x: "npm:^4.9.3"
     events: "npm:^3.3.0"
-    fp-ts: "npm:^2.16.9"
+    fp-ts: "npm:^2.16.10"
     io-ts: "npm:^2.2.22"
     npm-run-all: "npm:^4.1.5"
     prettier: "npm:^3.5.3"
