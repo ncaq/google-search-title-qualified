@@ -238,7 +238,7 @@ async function getTwitterTitle(urlString: string): Promise<string | undefined> {
     Array.from(dom.querySelectorAll("br, p")).forEach((el) =>
       el.appendChild(document.createTextNode("\n")),
     );
-    return dom.documentElement.textContent ?? undefined;
+    return dom.documentElement.textContent || undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("getTwitterTitle error", err, urlString);
