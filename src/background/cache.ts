@@ -62,7 +62,13 @@ function clearOldCacheFloating(): void {
   });
 }
 
-// 起動時にキャッシュ削除。
-clearOldCacheFloating();
-// 1日ごとにキャッシュ削除。
-setInterval(clearOldCacheFloating, 24 * 60 * 60 * 1000);
+/**
+ * キャッシュ管理システムを起動する。
+ * プログラムの起動時に有効になることを想定しています。
+ **/
+export function bootCacheManager(): void {
+  // 起動時にキャッシュ削除。
+  clearOldCacheFloating();
+  // 1日ごとにキャッシュ削除。
+  setInterval(clearOldCacheFloating, 24 * 60 * 60 * 1000);
+}
