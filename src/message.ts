@@ -1,26 +1,39 @@
 import * as t from "io-ts";
 
-// Offscreenへ送信するメッセージの型定義。
+export const getTitleMessage = t.type({
+  target: t.literal("background"),
+  type: t.literal("getTitle"),
+  url: t.string,
+});
+export type GetTitleMessage = t.TypeOf<typeof getTitleMessage>;
+
+export const BackgroundMessage = getTitleMessage;
+export type BackgroundMessage = t.TypeOf<typeof BackgroundMessage>;
+export const BackgroundResponse = t.union([t.string, t.undefined]);
 
 export const QueryTitleMessage = t.type({
+  target: t.literal("offscreen"),
   type: t.literal("queryTitle"),
   html: t.string,
 });
 export type QueryTitleMessage = t.TypeOf<typeof QueryTitleMessage>;
 
 export const QueryCharsetMessage = t.type({
+  target: t.literal("offscreen"),
   type: t.literal("queryCharset"),
   html: t.string,
 });
 export type QueryCharsetMessage = t.TypeOf<typeof QueryCharsetMessage>;
 
 export const QueryContentTypeMessage = t.type({
+  target: t.literal("offscreen"),
   type: t.literal("queryContentType"),
   html: t.string,
 });
 export type QueryContentTypeMessage = t.TypeOf<typeof QueryContentTypeMessage>;
 
 export const PrettyTwitterMessage = t.type({
+  target: t.literal("offscreen"),
   type: t.literal("prettyTwitter"),
   html: t.string,
 });

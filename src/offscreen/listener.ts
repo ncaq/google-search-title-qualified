@@ -1,24 +1,18 @@
 import { isLeft } from "fp-ts/lib/Either";
-import { PathReporter } from "io-ts/lib/PathReporter";
-import { OffscreenMessage } from "./message-types";
+import { OffscreenMessage } from "../message";
 
 /**
  * Offscreen側のリスナー。
  * ここでは`DOMParser`などが使える。
  */
 export function listener(message: unknown): string | undefined {
-  // JSONメッセージをパースしてバリデーション。
   if (typeof message !== "string") {
-    throw new Error(`Message is not a string: ${typeof message}`);
+    return;
   }
-
   const json: unknown = JSON.parse(message);
   const decoded = OffscreenMessage.decode(json);
-
   if (isLeft(decoded)) {
-    throw new Error(
-      `Invalid message format: ${PathReporter.report(decoded).join(", ")}`,
-    );
+    return;
   }
   const validMessage = decoded.right;
 

@@ -1,16 +1,21 @@
+import { isLeft } from "fp-ts/lib/Either";
+import { BackgroundMessage } from "../message";
 import { getTitleCache, saveCache } from "./cache";
 import { getHtmlTitle } from "./get-html-title";
 import { getTwitterTitle } from "./get-twitter";
 
 /** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
 export async function listener(message: unknown): Promise<string | undefined> {
-  // メッセージ内容がおかしい場合はエラー
   if (typeof message !== "string") {
-    throw new Error(
-      `message is not string, is ${typeof message}: ${JSON.stringify(message)}`,
-    );
+    return;
   }
-  const url = message;
+  const json: unknown = JSON.parse(message);
+  const decoded = BackgroundMessage.decode(json);
+  if (isLeft(decoded)) {
+    return;
+  }
+  const validMessage = decoded.right;
+  const { url } = validMessage;
   // PDFは読み込まない
   if (url.endsWith(".pdf")) {
     return undefined;

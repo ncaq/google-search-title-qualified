@@ -1,9 +1,6 @@
 import { Sema } from "async-sema";
 import { runtime } from "webextension-polyfill";
-import {
-  OffscreenMessage,
-  OffscreenResponse,
-} from "../offscreen/message-types";
+import { OffscreenMessage, OffscreenResponse } from "../message";
 
 /**
  * Offscreen Document作成のセマフォ。
