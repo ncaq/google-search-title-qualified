@@ -38,8 +38,8 @@ async function writeManifestJson(): Promise<void> {
         permissions: ["alarms", "offscreen", "storage"],
 
         background: {
-          scripts: ["dist/script/main.js"], // WebExtension Firefox
-          service_worker: "dist/worker/main.js", // Manifest V3 Chrome
+          scripts: ["dist/background/main.js"], // WebExtension Firefox
+          service_worker: "dist/background/main.js", // Manifest V3 Chrome
         },
         web_accessible_resources: [
           {
