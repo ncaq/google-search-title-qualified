@@ -5,11 +5,8 @@ updates:
     schedule:
       interval: "daily"
     labels:
-      - "Status: Review Needed"
-      - "Type: Dependencies"
-      - "Type: Maintenance"
       - "Type: CI"
-      - "Type: Meta"
+      - "Type: Dependencies"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -23,6 +20,4 @@ updates:
         patterns:
           - "*eslint*"
     labels:
-      - "Status: Review Needed"
       - "Type: Dependencies"
-      - "Type: Maintenance"
