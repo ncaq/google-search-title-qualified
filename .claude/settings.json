@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "allow": ["Bash(yarn:*)"],
+    "deny": ["Bash(npm:*)", "Bash(npx:*)", "Bash(pnpm:*)", "Bash(pnpx:*)"]
+  }
+}
