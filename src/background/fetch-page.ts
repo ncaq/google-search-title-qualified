@@ -8,16 +8,19 @@ import { Sema } from "async-sema";
  */
 const fetchSema = new Sema(3 * 3);
 
+/** ネットワーク通信は15秒でタイムアウト。
+ * やたらと時間がかかるサイトはどうせろくでもないことが多いので深追いしません。
+ */
+const timeoutFetchNetwork = 15 * 1000;
+
 /** ネットワーク帯域を利用する関数を明示化してまとめます。 */
 export async function fetchPage(url: string): Promise<Response> {
   await fetchSema.acquire();
   try {
     const abortController = new AbortController();
-    // ネットワーク通信は15秒でタイムアウト。
-    // やたらと時間がかかるサイトはどうせろくでもないことが多い。
     const timeout = setTimeout(() => {
       abortController.abort();
-    }, 15 * 1000);
+    }, timeoutFetchNetwork);
     try {
       return await fetch(url, {
         // 妙なリクエストを送らないように制限を加えます(こちらで書かないと変なこと起きないと思いますが)
