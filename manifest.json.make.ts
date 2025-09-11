@@ -41,6 +41,12 @@ async function writeManifestJson(): Promise<void> {
           scripts: ["dist/script/main.js"], // WebExtension Firefox
           service_worker: "dist/worker/main.js", // Manifest V3 Chrome
         },
+        web_accessible_resources: [
+          {
+            resources: ["asset/offscreen/index.html", "dist/offscreen/main.js"],
+            matches: ["<all_urls>"],
+          },
+        ],
         content_scripts: [
           {
             js: ["dist/content/main.js"],

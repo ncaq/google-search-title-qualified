@@ -12,9 +12,9 @@ const dir = fs.readdirSync(__dirname);
 const ignoreFiles = dir.filter(
   (file) =>
     !(
-      ["dist", "LICENSE", "manifest.json"].includes(file) ||
+      ["asset", "dist", "LICENSE", "manifest.json"].includes(file) ||
       file.startsWith("icon")
-    )
+    ),
 );
 
 export default {
