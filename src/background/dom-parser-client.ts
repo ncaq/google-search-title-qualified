@@ -1,3 +1,5 @@
+import { sendToOffscreen } from "./offscreen-client";
+
 /**
  * `DOMParserが`使える場合はそのまま`title`を取得します。
  * それ以外の場合はOffscreen Documentを使って取得します。
@@ -8,8 +10,7 @@ export async function queryTitle(text: string): Promise<string | undefined> {
     const dom = domParser.parseFromString(text, "text/html");
     return dom.querySelector("title")?.textContent ?? undefined;
   } catch (_err) {
-    await Promise.resolve();
-    throw new Error("unimplemented");
+    return await sendToOffscreen({ type: "queryTitle", html: text });
   }
 }
 
@@ -25,8 +26,7 @@ export async function queryCharset(text: string): Promise<string | undefined> {
       dom.querySelector("meta[charset]")?.getAttribute("charset") ?? undefined
     );
   } catch (_err) {
-    await Promise.resolve();
-    throw new Error("unimplemented");
+    return await sendToOffscreen({ type: "queryCharset", html: text });
   }
 }
 
@@ -46,8 +46,7 @@ export async function queryContentType(
         ?.getAttribute("content") ?? undefined
     );
   } catch (_err) {
-    await Promise.resolve();
-    throw new Error("unimplemented");
+    return await sendToOffscreen({ type: "queryContentType", html: text });
   }
 }
 
@@ -69,7 +68,6 @@ export async function prettyTwitter(html: string): Promise<string | undefined> {
     );
     return dom.documentElement.textContent || undefined;
   } catch (_err) {
-    await Promise.resolve();
-    throw new Error("unimplemented");
+    return await sendToOffscreen({ type: "prettyTwitter", html });
   }
 }
