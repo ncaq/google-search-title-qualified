@@ -1,4 +1,17 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd $CLAUDE_PROJECT_DIR && yarn fix"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": ["Bash(yarn:*)"],
     "deny": ["Bash(npm:*)", "Bash(npx:*)", "Bash(pnpm:*)", "Bash(pnpx:*)"]
