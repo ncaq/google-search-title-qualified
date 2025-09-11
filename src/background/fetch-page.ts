@@ -23,15 +23,6 @@ export async function fetchPage(url: string): Promise<Response> {
     }, timeoutFetchNetwork);
     try {
       return await fetch(url, {
-        // 妙なリクエストを送らないように制限を加えます。
-        // こちらで妙な引数を付与しない限り妙なリクエストは送られないとは思いますが。
-        mode: "no-cors",
-        // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
-        credentials: "omit",
-        // 出来るだけブラウザのキャッシュを使っていきます。
-        cache: "force-cache",
-        // リダイレクトを追うことを明示的に指定。
-        redirect: "follow",
         // タイムアウト中断コントローラ。
         signal: abortController.signal,
       });
