@@ -16,7 +16,7 @@ async function writeManifestJson(): Promise<void> {
     "manifest.json",
     JSON.stringify(
       {
-        manifest_version: 2,
+        manifest_version: 3,
         name: "google-search-title-qualified",
         version: "0.14.1",
         description:
@@ -34,9 +34,12 @@ async function writeManifestJson(): Promise<void> {
           "128": "icon-128.png",
         },
 
-        permissions: ["<all_urls>"],
+        host_permissions: ["<all_urls>"],
+        permissions: ["alarms", "offscreen", "storage"],
+
         background: {
-          scripts: ["dist/background/main.js"],
+          scripts: ["dist/background/main.js"], // WebExtension Firefox
+          service_worker: "dist/background/main.js", // Manifest V3 Chrome
         },
         content_scripts: [
           {
