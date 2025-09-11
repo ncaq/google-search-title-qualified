@@ -66,7 +66,7 @@ function clearOldCacheFloating(): void {
  * キャッシュ削除の間隔。
  * 1日ごとにキャッシュ削除を試みます。
  */
-const cacheCleanupInterval = 24 * 60 * 60 * 1000; // 24時間
+const cacheCleanupInterval = 24 * 60 * 60 * 1000;
 
 /**
  * キャッシュ管理システムを起動する。
