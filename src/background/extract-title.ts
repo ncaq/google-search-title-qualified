@@ -1,4 +1,5 @@
 import { convert } from "encoding-japanese";
+import { queryTitle } from "./dom-parser-client";
 import { detectEncoding, type Encoding } from "./encoding";
 
 /**
@@ -11,10 +12,8 @@ export async function extractTitle(
   // `encodingJapanese`は`string`に完全になってない`Array`を要求するため、`blob`でレスポンスを消費します。
   const blob = await response.blob();
   const text = await blob.text();
-  const domParser = new DOMParser();
-  const dom = domParser.parseFromString(text, "text/html");
   // エンコードを推定します。
-  const encoding = detectEncoding(response.headers, text);
+  const encoding = await detectEncoding(response.headers, text);
   // エンコードを取得できなかったら警告を出力します。
   if (encoding == null) {
     // eslint-disable-next-line no-console
@@ -23,7 +22,7 @@ export async function extractTitle(
   }
   // UTF-8の場合変換は必要ありません。
   if (encoding === "UTF8") {
-    return dom.querySelector("title")?.textContent ?? undefined;
+    return queryTitle(text);
   }
   // 他のエンコードでencoding-japaneseが対応しているものは変換を試みます。
   if (["SJIS", "EUCJP"].includes(encoding)) {
@@ -41,19 +40,15 @@ export async function extractTitle(
 /**
  * encoding-japaneseが対応している文字コードのページのタイトルを取得します。
  */
-function encodingJapaneseTitle(
+async function encodingJapaneseTitle(
   jp: Uint8Array,
   encoding: Encoding,
-): string | undefined {
+): Promise<string | undefined> {
   const utf8 = convert(jp, {
     to: "UTF8",
     from: encoding,
   });
-  const domParser = new DOMParser();
   const utf8Decoder = new TextDecoder();
-  const dom = domParser.parseFromString(
-    utf8Decoder.decode(new Uint8Array(utf8)),
-    "text/html",
-  );
-  return dom.querySelector("title")?.textContent ?? undefined;
+  const text = utf8Decoder.decode(new Uint8Array(utf8));
+  return queryTitle(text);
 }
