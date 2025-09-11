@@ -32,7 +32,7 @@ export async function getTwitterTitle(
     const response = await fetchPage(publish.href);
     if (!response.ok) {
       throw new Error(
-        `${publish.href}: response is not ok ${JSON.stringify(
+        `${publish.href}: response is not ok. Status: ${response.status.toString()}, StatusText: ${JSON.stringify(
           response.statusText,
         )}`,
       );

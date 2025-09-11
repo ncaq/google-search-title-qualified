@@ -7,7 +7,7 @@ export async function getHtmlTitle(url: string): Promise<string | undefined> {
     const response = await fetchPage(url);
     if (!response.ok) {
       throw new Error(
-        `${url}: response is not ok ${JSON.stringify(response.statusText)}`,
+        `${url}: response is not ok. Status: ${response.status.toString()}, StatusText: ${JSON.stringify(response.statusText)}`,
       );
     }
     const title = await extractTitle(response);
