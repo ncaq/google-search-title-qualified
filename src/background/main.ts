@@ -1,5 +1,6 @@
 import { runtime } from "webextension-polyfill";
 import { bootCacheManager } from "./cache";
+import { initializeFetchAlarmListener } from "./fetch-page";
 import { listener } from "./listener";
 
 /**
@@ -7,6 +8,7 @@ import { listener } from "./listener";
  */
 function main() {
   bootCacheManager();
+  initializeFetchAlarmListener();
   runtime.onMessage.addListener(listener);
 }
 
