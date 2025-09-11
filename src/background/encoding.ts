@@ -14,6 +14,14 @@ const encodingsRegex = new Map<Encoding, RegExp>([
   ["EUCJP", /EUC[-_]JP/i],
 ]);
 
+/**
+ * HTMLドキュメントから類推されるエンコードの手がかり。
+ */
+interface EncodingEvidence {
+  html5Charset?: string;
+  html4ContentType?: string;
+}
+
 /** エンコーディング判定用の正規表現に一致するか判断して、最初に一致したものを返します。 */
 function testEncoding(source: string): Encoding | undefined {
   return encodings.find((encoding) => {
@@ -23,27 +31,40 @@ function testEncoding(source: string): Encoding | undefined {
 }
 
 /**
+ * HTMLドキュメントから類推されるエンコードの手がかりを取得します。
+ */
+function queryEncodingEvidence(text: string): EncodingEvidence {
+  const domParser = new DOMParser();
+  const dom = domParser.parseFromString(text, "text/html");
+  const html5Charset =
+    dom.querySelector("meta[charset]")?.getAttribute("charset") ?? undefined;
+  const html4ContentType =
+    dom
+      .querySelector('meta[http-equiv="Content-Type"]')
+      ?.getAttribute("content") ?? undefined;
+  return {
+    html5Charset,
+    html4ContentType,
+  };
+}
+
+/**
  * HTTPとHTMLの情報から文字コードの推定を行います。
  * 複数のエンコーディングが指定されていて、
  * それぞれが矛盾している場合バグだと判断してundefinedを返します。
  */
 export function detectEncoding(
-  response: Response,
-  d: Document,
+  headers: Headers,
+  text: string,
 ): Encoding | undefined {
   // 判定用の文字列を取得します。
-  const httpContentType = response.headers.get("content-type") ?? "";
-  const html5Charset =
-    d.querySelector("meta[charset]")?.getAttribute("charset") ?? "";
-  const html4ContentType =
-    d
-      .querySelector('meta[http-equiv="Content-Type"]')
-      ?.getAttribute("content") ?? "";
+  const httpContentType = headers.get("content-type") ?? "";
+  const { html5Charset, html4ContentType } = queryEncodingEvidence(text);
   // それぞれのソースから計算したエンコーディングを取得します。
   // 判定不能だったものは除外します。
   const testedEncodings = [httpContentType, html5Charset, html4ContentType]
-    .map((s) => testEncoding(s))
-    .filter((e): e is NonNullable<typeof e> => e != null);
+    .filter((e) => e != null)
+    .map((s) => testEncoding(s));
   // Setを使って重複を除外します。
   const encodingsSet = new Set(testedEncodings);
   // 要素数が1の時のみ正しい結果だと判別します。
