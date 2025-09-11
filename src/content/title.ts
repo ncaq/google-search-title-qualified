@@ -59,7 +59,9 @@ async function replace(url: string, link: Element): Promise<void> {
     throw new Error("titleElement is not HTMLElement");
   }
   // 省略記号によってタイトルの長さが水増しされていることがあるので、省略記号っぽいものは除去します。
-  const oldTitle = titleElement.textContent?.replace("...", "") ?? "";
+  const oldTitle = titleElement.textContent
+    ? titleElement.textContent.replace("...", "")
+    : "";
   if (newTitle.length < oldTitle.length) {
     // 古いタイトルの方が長い場合取得失敗の可能性が高いので、置き換えを行いません。
     return;

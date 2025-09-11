@@ -4,17 +4,18 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import { flatConfigs } from "eslint-plugin-import-x";
-import { config, configs } from "typescript-eslint";
+import { configs as tseslintConfigs } from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const gitignorePath = path.resolve(__dirname, ".gitignore");
 
-export default config(
+export default defineConfig(
   includeIgnoreFile(gitignorePath),
   eslintConfigPrettier,
   flatConfigs.recommended,
@@ -35,8 +36,8 @@ export default config(
     },
   },
   eslint.configs.recommended,
-  ...configs.strictTypeChecked,
-  ...configs.stylisticTypeChecked,
+  ...tseslintConfigs.strictTypeChecked,
+  ...tseslintConfigs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
