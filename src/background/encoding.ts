@@ -60,7 +60,8 @@ export async function detectEncoding(
   // 判定不能だったものは除外します。
   const testedEncodings = [httpContentType, html5Charset, html4ContentType]
     .filter((e) => e != null)
-    .map((s) => testEncoding(s));
+    .map((s) => testEncoding(s))
+    .filter((e) => e != null);
   // Setを使って重複を除外します。
   const encodingsSet = new Set(testedEncodings);
   // 要素数が1の時のみ正しい結果だと判別します。
