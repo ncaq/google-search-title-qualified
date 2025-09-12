@@ -1,11 +1,11 @@
 import { isLeft } from "fp-ts/lib/Either";
-import { BackgroundMessage } from "../message";
+import { BackgroundMessage, BackgroundResponse } from "../message";
 import { getTitleCache, saveCache } from "./cache";
 import { getHtmlTitle } from "./get-html-title";
 import { getTwitterTitle } from "./get-twitter";
 
 /** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
-export async function listener(message: unknown): Promise<string | undefined> {
+export async function listener(message: unknown): Promise<BackgroundResponse> {
   const decoded = BackgroundMessage.decode(message);
   if (isLeft(decoded)) {
     return;
