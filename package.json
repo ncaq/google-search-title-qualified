@@ -4,7 +4,7 @@
   "author": "ncaq <ncaq@ncaq.net>",
   "scripts": {
     "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
-    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox102 src/background/main.ts src/content/main.ts",
+    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox115 src/background/main.ts src/content/main.ts",
     "fix": "FORCE_COLOR=1 run-p --print-label --continue-on-error 'fix:*'",
     "fix:eslint": "yarn 'lint:eslint' --fix",
     "fix:prettier": "yarn 'lint:prettier' --write",
@@ -15,7 +15,7 @@
     "lint:web-ext": "web-ext lint",
     "package": "rm -rf dist/ && yarn 'build' && web-ext build",
     "start": "web-ext run",
-    "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox102 --sourcemap src/background/main.ts src/content/main.ts"
+    "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox115 --sourcemap src/background/main.ts src/content/main.ts"
   },
   "dependencies": {
     "async-sema": "^3.1.1",

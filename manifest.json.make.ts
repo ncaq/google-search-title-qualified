@@ -24,7 +24,7 @@ async function writeManifestJson(): Promise<void> {
         browser_specific_settings: {
           gecko: {
             id: "google-search-title-qualified@ncaq.net",
-            strict_min_version: "102.0",
+            strict_min_version: "115.0",
           },
         },
 
