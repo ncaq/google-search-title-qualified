@@ -21,3 +21,21 @@ yarn fix
 ```console
 yarn lint
 ```
+
+## ファイル
+
+### `manifest.json`
+
+`manifest.json`はGitリポジトリに含めていません。
+gitignoreしています。
+
+ビルドするときに、
+`manifest.json.make.ts`をyarnのランナーで実行して`manifest.json`を生成しています。
+
+なぜそうしているのかと言うと、
+`content_scripts`をGoogleの検索結果ページだけで実行したいのですが、
+Googleの所有するドメインをスクリプトで収集して実行場所を最新の最小限の状態にしたいからです。
+
+まあ最近は`google.com`だけに統一されるという話があるので、
+もうその必要はないのかもしれませんが、
+とにかくそういう理由で`manifest.json`はプログラムで生成しています。
