@@ -15,8 +15,10 @@ export async function extractTitle(
   const dom = domParser.parseFromString(text, "text/html");
   // エンコードを推定します。
   const encoding = detectEncoding(response.headers, text);
-  // エンコードを取得できなかったら無を返します。
+  // エンコードを取得できなかったら警告を出力します。
   if (encoding == null) {
+    // eslint-disable-next-line no-console
+    console.warn("extractTitle: encoding is undefined");
     return undefined;
   }
   // UTF-8の場合変換は必要ありません。
@@ -30,7 +32,9 @@ export async function extractTitle(
       encoding,
     );
   }
-  // 対応していないエンコードの場合は無を返します。
+  // 対応していないエンコードの場合は警告を出力します。
+  // eslint-disable-next-line no-console
+  console.warn(`extractTitle: encoding is not supported: ${encoding}`);
   return undefined;
 }
 

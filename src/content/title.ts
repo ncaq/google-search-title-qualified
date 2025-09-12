@@ -23,9 +23,7 @@ async function fetchBackground(url: string): Promise<string | undefined> {
     // タイトルがstringではない場合プログラミングミスなので例外を投げます。
     if (typeof newTitle !== "string") {
       throw new Error(
-        `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
-          newTitle,
-        )}`,
+        `response is not BackgroundResponse: ${JSON.stringify(newTitle)}`,
       );
     }
     return newTitle;

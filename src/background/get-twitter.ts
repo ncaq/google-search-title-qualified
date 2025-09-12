@@ -31,14 +31,20 @@ export async function getTwitterTitle(
     publish.searchParams.set("lang", navigator.language || "en");
     const response = await fetchPage(publish.href);
     if (!response.ok) {
-      throw new Error(
-        `${publish.href}: response is not ok ${JSON.stringify(
+      // eslint-disable-next-line no-console
+      console.warn(
+        `${publish.href}: response is not ok. Status: ${response.status.toString()}, StatusText: ${JSON.stringify(
           response.statusText,
         )}`,
       );
+      return undefined;
     }
     const j: unknown = await response.json();
     if (!twitterOembed.is(j)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `${publish.href}: response is not twitterOembed. ${JSON.stringify(j)}`,
+      );
       return undefined;
     }
     const domParser = new DOMParser();
