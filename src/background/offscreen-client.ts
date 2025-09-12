@@ -51,7 +51,7 @@ async function ensureOffscreenDocument(): Promise<void> {
  */
 export async function sendToOffscreen(
   message: OffscreenMessage,
-): Promise<OffscreenResponse> {
+): Promise<string | undefined> {
   await ensureOffscreenDocument();
   const response = await runtime.sendMessage(message);
   if (!OffscreenResponse.is(response)) {
@@ -59,5 +59,5 @@ export async function sendToOffscreen(
       `response is not OffscreenResponse: ${JSON.stringify(response)}`,
     );
   }
-  return response;
+  return response ?? undefined;
 }

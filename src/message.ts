@@ -51,5 +51,5 @@ export type OffscreenMessage = t.TypeOf<typeof OffscreenMessage>;
 /**
  * Offscreenからの応答の型定義。
  */
-export const OffscreenResponse = t.union([t.string, t.undefined]);
+export const OffscreenResponse = t.union([t.string, t.undefined, t.null]);
 export type OffscreenResponse = t.TypeOf<typeof OffscreenResponse>;
