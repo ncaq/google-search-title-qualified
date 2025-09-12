@@ -1,5 +1,4 @@
 import { Sema } from "async-sema";
-import { runtime } from "webextension-polyfill";
 import { OffscreenMessage, OffscreenResponse } from "../message";
 
 /**
@@ -36,7 +35,7 @@ async function ensureOffscreenDocument(): Promise<void> {
     if (!exists) {
       const createDocument = chrome.offscreen.createDocument;
       await createDocument({
-        url: runtime.getURL("/asset/offscreen/index.html"),
+        url: chrome.runtime.getURL("/asset/offscreen/index.html"),
         reasons: ["DOM_PARSER"],
         justification: "Parse HTML to extract metadata",
       });
@@ -53,7 +52,7 @@ export async function sendToOffscreen(
   message: OffscreenMessage,
 ): Promise<string | undefined> {
   await ensureOffscreenDocument();
-  const response = await runtime.sendMessage(message);
+  const response: unknown = await chrome.runtime.sendMessage(message);
   if (!OffscreenResponse.is(response)) {
     throw new Error(
       `response is not OffscreenResponse: ${JSON.stringify(response)}`,
