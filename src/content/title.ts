@@ -1,5 +1,4 @@
 import { Sema } from "async-sema";
-import { runtime } from "webextension-polyfill";
 import { BackgroundResponse } from "../message";
 
 /**
@@ -16,7 +15,7 @@ const fetchSema = new Sema(3);
 async function fetchBackground(url: string): Promise<string | undefined> {
   await fetchSema.acquire();
   try {
-    const newTitle: unknown = await runtime.sendMessage({
+    const newTitle: unknown = await chrome.runtime.sendMessage({
       target: "background",
       type: "getTitle",
       url,

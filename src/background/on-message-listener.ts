@@ -11,7 +11,7 @@ export function onMessageListener(
 ): boolean | undefined {
   const decoded = BackgroundMessage.decode(message);
   if (isLeft(decoded)) {
-    return undefined;
+    return false;
   }
   (async () => {
     sendResponse(await handleMessageListener(decoded.right));

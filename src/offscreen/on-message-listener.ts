@@ -1,21 +1,26 @@
 import { isLeft } from "fp-ts/lib/Either";
-import { OffscreenMessage } from "../message";
+import { OffscreenMessage, OffscreenResponse } from "../message";
 
 /**
  * Offscreen側のリスナー。
  * ここでは`DOMParser`などが使える。
  */
-export function onMessageListener(message: unknown): string | undefined {
+export function onMessageListener(
+  message: unknown,
+  sendResponse: (response: OffscreenResponse) => void,
+): boolean | undefined {
   const decoded = OffscreenMessage.decode(message);
   if (isLeft(decoded)) {
-    // 無関係なメッセージは無視。
-    return undefined;
+    return false;
   }
-  const validMessage = decoded.right;
+  sendResponse(handleMessageListener(decoded.right));
+  return false;
+}
 
+function handleMessageListener(message: OffscreenMessage): OffscreenResponse {
   const domParser = new DOMParser();
-  const dom = domParser.parseFromString(validMessage.html, "text/html");
-  switch (validMessage.type) {
+  const dom = domParser.parseFromString(message.html, "text/html");
+  switch (message.type) {
     case "queryTitle": {
       const title = dom.querySelector("title")?.textContent ?? undefined;
       // eslint-disable-next-line no-console
