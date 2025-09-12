@@ -17,7 +17,7 @@ export async function extractTitle(
   // エンコードを取得できなかったら警告を出力します。
   if (encoding == null) {
     // eslint-disable-next-line no-console
-    console.warn("extractTitle: encoding is undefined");
+    console.warn("extractTitle: encoding is undefined, URL:", response.url);
     return undefined;
   }
   // UTF-8の場合変換は必要ありません。
