@@ -38,6 +38,10 @@ async function writeManifestJson(): Promise<void> {
         permissions: ["alarms", "offscreen", "storage"],
 
         background: {
+          // Firefoxでは`scripts`、Chromeでは`service_worker`が立ち上がります。
+          // 両方定義していると都合の良い方が自動的に選ばれます。
+          // 一応Firefoxは`service_worker`にChromeは`scripts`に対応していない警告を出しますが、
+          // 動作に問題はないので、両方で動かせる`manifest.json`を生成します。
           scripts: ["dist/background/main.js"], // WebExtension Firefox
           service_worker: "dist/background/main.js", // Manifest V3 Chrome
         },
