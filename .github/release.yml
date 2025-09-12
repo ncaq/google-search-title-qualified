@@ -1,8 +1,6 @@
 changelog:
   exclude:
     labels:
-      - "Type: Meta"
-      - "Type: Question"
       - "Type: Release"
 
   categories:
@@ -20,8 +18,6 @@ changelog:
       labels: ["Type: Refactoring"]
     - title: Testing
       labels: ["Type: Testing"]
-    - title: Maintenance
-      labels: ["Type: Maintenance"]
     - title: CI
       labels: ["Type: CI"]
     - title: Dependency Updates
