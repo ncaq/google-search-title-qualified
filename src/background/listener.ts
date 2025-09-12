@@ -20,7 +20,7 @@ export async function listener(message: unknown): Promise<string | undefined> {
   if (cacheTitle == null) {
     // TwitterのAPIかHTMLのtitleタグを取得。
     const title = (await getTwitterTitle(url)) ?? (await getHtmlTitle(url));
-    // あえてPromiseの終了を待ちません。
+    // あえてPromiseの終了を待たずに非同期でキャッシュを保存します。
     saveCache(url, title).catch((err: unknown) => {
       // eslint-disable-next-line no-console
       console.error("saveCache is error", err, url, title);
