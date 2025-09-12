@@ -4,25 +4,36 @@ import { getTitleCache, saveCache } from "./cache";
 import { getHtmlTitle } from "./get-html-title";
 import { getTwitterTitle } from "./get-twitter";
 
-/** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
+/**
+ * バックグラウンド向けのメッセージかを同期的に判定し、
+ * 該当する場合は非同期処理を開始してtrueを返します。
+ * 該当しない場合はfalseを返して他のリスナーに委譲します。
+ */
 export function onMessageListener(
   message: unknown,
   sendResponse: (response: BackgroundResponse) => void,
-): boolean | undefined {
+): boolean {
   const decoded = BackgroundMessage.decode(message);
   if (isLeft(decoded)) {
+    // バックグラウンド向けのメッセージではないので、他のリスナーに委譲
     return false;
   }
-  (async () => {
-    sendResponse(await handleMessageListener(decoded.right));
-  })().catch((err: unknown) => {
-    // eslint-disable-next-line no-console
-    console.error("onMessageListener is error.", err);
-  });
+  // バックグラウンド向けのメッセージなので非同期処理を開始
+  handleMessage(decoded.right)
+    .then(sendResponse)
+    .catch((err: unknown) => {
+      // eslint-disable-next-line no-console
+      console.error("onMessageListener is error.", err);
+      sendResponse(undefined);
+    });
+  // 非同期応答を行うことをChromeに通知
   return true;
 }
 
-async function handleMessageListener(
+/**
+ * バックグラウンドメッセージを非同期で処理します。
+ */
+async function handleMessage(
   message: BackgroundMessage,
 ): Promise<BackgroundResponse> {
   const { url } = message;
