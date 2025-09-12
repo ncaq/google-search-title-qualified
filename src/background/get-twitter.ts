@@ -17,7 +17,8 @@ export async function getTwitterTitle(
       !(
         (url.hostname === "twitter.com" ||
           url.hostname === "mobile.twitter.com" ||
-          url.hostname === "x.com") &&
+          url.hostname === "x.com" ||
+          url.hostname === "mobile.x.com") &&
         /^\/\w+\/status\/\d+/.exec(url.pathname)
       )
     ) {
