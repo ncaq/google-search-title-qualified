@@ -6,11 +6,7 @@ import { OffscreenMessage } from "../message";
  * ここでは`DOMParser`などが使える。
  */
 export function listener(message: unknown): string | undefined {
-  if (typeof message !== "string") {
-    return;
-  }
-  const json: unknown = JSON.parse(message);
-  const decoded = OffscreenMessage.decode(json);
+  const decoded = OffscreenMessage.decode(message);
   if (isLeft(decoded)) {
     return;
   }

@@ -53,7 +53,7 @@ export async function sendToOffscreen(
   message: OffscreenMessage,
 ): Promise<OffscreenResponse> {
   await ensureOffscreenDocument();
-  const response = await runtime.sendMessage(JSON.stringify(message));
+  const response = await runtime.sendMessage(message);
   if (!OffscreenResponse.is(response)) {
     throw new Error(
       `response is not OffscreenResponse: ${JSON.stringify(response)}`,

@@ -16,13 +16,11 @@ const fetchSema = new Sema(3);
 async function fetchBackground(url: string): Promise<string | undefined> {
   await fetchSema.acquire();
   try {
-    const newTitle: unknown = await runtime.sendMessage(
-      JSON.stringify({
-        target: "background",
-        type: "getTitle",
-        url,
-      }),
-    );
+    const newTitle: unknown = await runtime.sendMessage({
+      target: "background",
+      type: "getTitle",
+      url,
+    });
     if (!BackgroundResponse.is(newTitle)) {
       // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
       if (newTitle == null) {

@@ -6,11 +6,7 @@ import { getTwitterTitle } from "./get-twitter";
 
 /** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
 export async function listener(message: unknown): Promise<string | undefined> {
-  if (typeof message !== "string") {
-    return;
-  }
-  const json: unknown = JSON.parse(message);
-  const decoded = BackgroundMessage.decode(json);
+  const decoded = BackgroundMessage.decode(message);
   if (isLeft(decoded)) {
     return;
   }
