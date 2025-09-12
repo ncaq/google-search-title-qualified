@@ -1,7 +1,6 @@
-import { runtime } from "webextension-polyfill";
 import { bootCacheManager } from "./cache";
 import { initializeFetchAlarmListener } from "./fetch-page";
-import { listener } from "./listener";
+import { onMessageListener } from "./on-message-listener";
 
 /**
  * バックグラウンド側のエントリーポイント。
@@ -9,7 +8,9 @@ import { listener } from "./listener";
 function main() {
   bootCacheManager();
   initializeFetchAlarmListener();
-  runtime.onMessage.addListener(listener);
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) =>
+    onMessageListener(message, sendResponse),
+  );
 }
 
 main();

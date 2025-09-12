@@ -22,19 +22,14 @@ async function fetchBackground(url: string): Promise<string | undefined> {
       url,
     });
     if (!BackgroundResponse.is(newTitle)) {
-      // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
-      if (newTitle == null) {
-        return undefined;
-      } else {
-        // プログラミングミスなので例外を投げます。
-        throw new Error(
-          `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
-            newTitle,
-          )}`,
-        );
-      }
+      // プログラミングミスなので例外を投げます。
+      throw new Error(
+        `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
+          newTitle,
+        )}`,
+      );
     }
-    return newTitle;
+    return newTitle ?? undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("fetchBackground is error.", err);

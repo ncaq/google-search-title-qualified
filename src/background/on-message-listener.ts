@@ -5,13 +5,27 @@ import { getHtmlTitle } from "./get-html-title";
 import { getTwitterTitle } from "./get-twitter";
 
 /** バックグラウンドプロセス全体のメッセージパッシングを受け取ります */
-export async function listener(message: unknown): Promise<BackgroundResponse> {
+export function onMessageListener(
+  message: unknown,
+  sendResponse: (response: BackgroundResponse) => void,
+): boolean | undefined {
   const decoded = BackgroundMessage.decode(message);
   if (isLeft(decoded)) {
-    return;
+    return undefined;
   }
-  const validMessage = decoded.right;
-  const { url } = validMessage;
+  (async () => {
+    sendResponse(await handleMessageListener(decoded.right));
+  })().catch((err: unknown) => {
+    // eslint-disable-next-line no-console
+    console.error("onMessageListener is error.", err);
+  });
+  return true;
+}
+
+async function handleMessageListener(
+  message: BackgroundMessage,
+): Promise<BackgroundResponse> {
+  const { url } = message;
   // PDFは読み込まない
   if (url.endsWith(".pdf")) {
     return undefined;

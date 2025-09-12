@@ -9,7 +9,7 @@ export type GetTitleMessage = t.TypeOf<typeof getTitleMessage>;
 
 export const BackgroundMessage = getTitleMessage;
 export type BackgroundMessage = t.TypeOf<typeof BackgroundMessage>;
-export const BackgroundResponse = t.union([t.string, t.undefined]);
+export const BackgroundResponse = t.union([t.string, t.undefined, t.null]);
 export type BackgroundResponse = t.TypeOf<typeof BackgroundResponse>;
 
 export const QueryTitleMessage = t.type({

@@ -1,8 +1,11 @@
-import { runtime } from "webextension-polyfill";
-import { listener } from "./listener";
+import { onMessageListener } from "./on-message-listener";
 
 function main() {
-  runtime.onMessage.addListener(listener);
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    sendResponse(onMessageListener(message));
+    // 同期的に処理したのでfalseを返す。
+    return false;
+  });
 }
 
 main();

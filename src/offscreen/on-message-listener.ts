@@ -5,19 +5,22 @@ import { OffscreenMessage } from "../message";
  * Offscreen側のリスナー。
  * ここでは`DOMParser`などが使える。
  */
-export function listener(message: unknown): string | undefined {
+export function onMessageListener(message: unknown): string | undefined {
   const decoded = OffscreenMessage.decode(message);
   if (isLeft(decoded)) {
-    return;
+    // 無関係なメッセージは無視。
+    return undefined;
   }
   const validMessage = decoded.right;
 
   const domParser = new DOMParser();
   const dom = domParser.parseFromString(validMessage.html, "text/html");
-
   switch (validMessage.type) {
     case "queryTitle": {
-      return dom.querySelector("title")?.textContent ?? undefined;
+      const title = dom.querySelector("title")?.textContent ?? undefined;
+      // eslint-disable-next-line no-console
+      console.log("Offscreen found title:", title);
+      return title;
     }
 
     case "queryCharset": {
