@@ -13,7 +13,7 @@
     ]
   },
   "permissions": {
-    "allow": ["Bash(yarn:*)"],
+    "allow": ["Bash(web-ext lint:*)", "Bash(yarn:*)"],
     "deny": ["Bash(npm)", "Bash(npx)", "Bash(pnpm)", "Bash(pnpx)"]
   }
 }
