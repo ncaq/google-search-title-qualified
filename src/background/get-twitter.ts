@@ -1,5 +1,4 @@
 import * as t from "io-ts";
-import { domParser } from "./extract-title";
 import { fetchPage } from "./fetch-page";
 
 const twitterOembed = t.type({
@@ -42,6 +41,7 @@ export async function getTwitterTitle(
     if (!twitterOembed.is(j)) {
       return undefined;
     }
+    const domParser = new DOMParser();
     const dom = domParser.parseFromString(j.html, "text/html");
     // Twitterは改行などが反映されないと少し見苦しいので、
     // ちょっとした整形をする。
