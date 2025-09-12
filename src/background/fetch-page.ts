@@ -23,6 +23,8 @@ export async function fetchPage(url: string): Promise<Response> {
     }, timeoutFetchNetwork);
     try {
       return await fetch(url, {
+        // 認証情報が不用意に送られないようにします。サイトの誤動作防止の意味が強い。
+        credentials: "omit",
         // タイムアウト中断コントローラ。
         signal: abortController.signal,
       });
