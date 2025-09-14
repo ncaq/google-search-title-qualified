@@ -13,8 +13,7 @@ const offscreenSema = new Sema(1);
  */
 async function checkOffscreenDocumentExists(): Promise<boolean> {
   try {
-    const getContexts = chrome.runtime.getContexts;
-    const existingContexts = await getContexts({
+    const existingContexts = await chrome.runtime.getContexts({
       contextTypes: ["OFFSCREEN_DOCUMENT"],
     });
     return existingContexts.length > 0;
@@ -35,8 +34,7 @@ async function ensureOffscreenDocument(): Promise<void> {
   try {
     const exists = await checkOffscreenDocumentExists();
     if (!exists) {
-      const createDocument = chrome.offscreen.createDocument;
-      await createDocument({
+      await chrome.offscreen.createDocument({
         url: chrome.runtime.getURL("/asset/offscreen/index.html"),
         reasons: ["DOM_PARSER"],
         justification: "Parse HTML to extract metadata",
