@@ -1,9 +1,10 @@
 import { OffscreenMessage } from "../message";
-
-/** esbuild側で定義されているターゲット変数。 */
-declare const __BROWSER_TARGET__: "firefox" | "chrome";
-
 import { sendToOffscreen as sendToOffscreenChrome } from "./offscreen-chrome";
+
+/**
+ * esbuild側で定義されているターゲット変数。
+ */
+declare const __BROWSER_TARGET__: "firefox" | "chrome";
 
 /**
  * Offscreen Documentにメッセージを送信。
