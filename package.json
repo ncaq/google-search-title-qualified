@@ -18,8 +18,8 @@
     "lint:tsc": "tsc --noEmit",
     "lint:web-ext": "web-ext lint --source-dir=build/firefox",
     "package": "FORCE_COLOR=1 rm -rf build/ && yarn build && run-p --print-label --continue-on-error 'package:*'",
-    "package:chrome": "web-ext build --source-dir=build/chrome --artifacts-dir=dist",
-    "package:firefox": "web-ext build --source-dir=build/firefox --artifacts-dir=dist",
+    "package:chrome": "web-ext build --source-dir=build/chrome --artifacts-dir=artifacts --filename='{name}-{version}-chrome.zip'",
+    "package:firefox": "web-ext build --source-dir=build/firefox --artifacts-dir=artifacts --filename='{name}-{version}-firefox.zip'",
     "start": "web-ext run --source-dir=build/firefox",
     "watch": "ts-node manifest.json.make.ts firefox && esbuild --bundle --watch --outdir=build/firefox/dist --target=firefox115 --sourcemap --define:__BROWSER_TARGET__='\"firefox\"' src/background/main.ts src/content/main.ts"
   },

@@ -143,6 +143,7 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 
+artifacts/
 build/
 
 google-search-title-qualified.tar.gz

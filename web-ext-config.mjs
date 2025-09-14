@@ -20,7 +20,6 @@ const ignoreFiles = dir.filter(
 export default {
   build: {
     overwriteDest: true,
-    filename: "google-search-title-qualified.zip",
   },
   ignoreFiles,
   run: {
