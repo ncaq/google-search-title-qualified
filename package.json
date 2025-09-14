@@ -4,7 +4,11 @@
   "author": "ncaq <ncaq@ncaq.net>",
   "scripts": {
     "archive": "git archive HEAD --output=google-search-title-qualified.tar.gz",
-    "build": "ts-node manifest.json.make.ts && esbuild --bundle --outdir=dist --target=firefox115 src/background/main.ts src/content/main.ts src/offscreen/main.ts",
+    "build": "FORCE_COLOR=1 run-p --print-label --continue-on-error 'build:*'",
+    "build:chrome": "ts-node manifest.json.make.ts chrome && esbuild --bundle --outdir=build/chrome/dist --target=es2024 --define:__BROWSER_TARGET__='\"chrome\"' src/background/main.ts src/content/main.ts src/offscreen/main.ts && yarn copy-assets:chrome",
+    "build:firefox": "ts-node manifest.json.make.ts firefox && esbuild --bundle --outdir=build/firefox/dist --target=firefox115 --define:__BROWSER_TARGET__='\"firefox\"' src/background/main.ts src/content/main.ts && yarn copy-assets:firefox",
+    "copy-assets:chrome": "cp icon-*.png icon.png icon.svg build/chrome/ && mkdir -p build/chrome/asset/offscreen && cp asset/offscreen/index.html build/chrome/asset/offscreen/",
+    "copy-assets:firefox": "cp icon-*.png icon.png icon.svg build/firefox/",
     "fix": "FORCE_COLOR=1 run-p --print-label --continue-on-error 'fix:*'",
     "fix:eslint": "yarn 'lint:eslint' --fix",
     "fix:prettier": "yarn 'lint:prettier' --write",
@@ -12,10 +16,12 @@
     "lint:eslint": "eslint --max-warnings 0",
     "lint:prettier": "prettier --ignore-path .gitignore --ignore-unknown --check '**/*.{js,jsx,ts,tsx,json,html,css,less,sass,scss,yml,yaml}'",
     "lint:tsc": "tsc --noEmit",
-    "lint:web-ext": "web-ext lint",
-    "package": "rm -rf dist/ && yarn 'build' && web-ext build",
-    "start": "web-ext run",
-    "watch": "ts-node manifest.json.make.ts && esbuild --bundle --watch --outdir=dist --target=firefox115 --sourcemap src/background/main.ts src/content/main.ts src/offscreen/main.ts"
+    "lint:web-ext": "web-ext lint --source-dir=build/firefox",
+    "package": "FORCE_COLOR=1 rm -rf build/ && yarn build && run-p --print-label --continue-on-error 'package:*'",
+    "package:chrome": "web-ext build --source-dir=build/chrome --artifacts-dir=dist",
+    "package:firefox": "web-ext build --source-dir=build/firefox --artifacts-dir=dist",
+    "start": "web-ext run --source-dir=build/firefox",
+    "watch": "ts-node manifest.json.make.ts firefox && esbuild --bundle --watch --outdir=build/firefox/dist --target=firefox115 --sourcemap --define:__BROWSER_TARGET__='\"firefox\"' src/background/main.ts src/content/main.ts"
   },
   "dependencies": {
     "async-sema": "^3.1.1",
