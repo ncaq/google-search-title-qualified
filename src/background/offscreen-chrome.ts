@@ -1,4 +1,5 @@
 import { Sema } from "async-sema";
+import { runtime } from "webextension-polyfill";
 import { OffscreenMessage, OffscreenResponse } from "../message";
 
 /**
@@ -54,7 +55,7 @@ export async function sendToOffscreen(
   message: OffscreenMessage,
 ): Promise<string | undefined> {
   await ensureOffscreenDocument();
-  const response: unknown = await chrome.runtime.sendMessage(message);
+  const response: unknown = await runtime.sendMessage(message);
   if (!OffscreenResponse.is(response)) {
     throw new Error(
       `response is not OffscreenResponse: ${JSON.stringify(response)}`,
