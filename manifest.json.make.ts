@@ -37,7 +37,7 @@ async function newBaseManifest(): Promise<chrome.runtime.ManifestV3> {
   return {
     manifest_version: 3,
     name: "google-search-title-qualified",
-    version: "0.14.1",
+    version: "1.0.0",
     description:
       "Google will omit the title of the web page. With this add-on, the original title is used as much as possible.",
     icons: {
