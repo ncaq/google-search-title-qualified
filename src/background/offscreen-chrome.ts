@@ -17,7 +17,9 @@ async function checkOffscreenDocumentExists(): Promise<boolean> {
       contextTypes: ["OFFSCREEN_DOCUMENT"],
     });
     return existingContexts.length > 0;
-  } catch {
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("checkOffscreenDocumentExists is error.", err);
     // APIが利用できない場合はfalseを返す
     return false;
   }
