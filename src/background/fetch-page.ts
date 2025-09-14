@@ -51,8 +51,11 @@ export async function fetchPage(url: string): Promise<Response> {
         signal: abortController.signal,
       });
     } finally {
-      // クリーンアップ
-      void alarms.clear(alarmName);
+      // クリーンアップ。
+      alarms.clear(alarmName).catch((err: unknown) => {
+        // eslint-disable-next-line no-console
+        console.error("alarms.clear is error.", err, alarmName);
+      });
       activeFetches.delete(alarmName);
     }
   } finally {
