@@ -46,8 +46,9 @@ async function queryEncodingEvidence(text: string): Promise<EncodingEvidence> {
 
 /**
  * HTTPとHTMLの情報から文字コードの推定を行います。
- * 複数のエンコーディングが指定されていて、
- * それぞれが矛盾している場合バグだと判断してundefinedを返します。
+ * 複数のエンコーディングが検出された場合は、
+ * どれが正しいのか判断が難しいので、
+ * タイトルの文字化けが起きるリスクを避けるために`undefined`を返します。
  */
 export async function detectEncoding(
   headers: Headers,
