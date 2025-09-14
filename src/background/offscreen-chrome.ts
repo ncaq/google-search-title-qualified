@@ -27,6 +27,8 @@ async function checkOffscreenDocumentExists(): Promise<boolean> {
 /**
  * Offscreen Documentを作成または既存のものを使用。
  * セマフォで同時作成を防ぐ。
+ * Offscreenのリソースの管理はChrome側が行っているため、
+ * こちらで明示的に削除は行わない。
  */
 async function ensureOffscreenDocument(): Promise<void> {
   await offscreenSema.acquire();
