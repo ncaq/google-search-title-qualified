@@ -80,6 +80,11 @@ export function bootCacheManager(): void {
   // 起動時にキャッシュ削除。
   clearOldCacheFloating();
   // 1日ごとにキャッシュ削除するためのアラームを設定。
+  alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === CACHE_CLEANUP_ALARM) {
+      clearOldCacheFloating();
+    }
+  });
   alarms.create(CACHE_CLEANUP_ALARM, {
     periodInMinutes: cacheCleanupIntervalMinutes,
   });
