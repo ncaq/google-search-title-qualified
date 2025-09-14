@@ -1,5 +1,6 @@
 import { Sema } from "async-sema";
 import { runtime } from "webextension-polyfill";
+import { BackgroundResponse } from "../message";
 
 /**
  * 求められるままネットワークコネクションを開きまくるとブラウザの動作に支障が出ることと、
@@ -15,18 +16,20 @@ const fetchSema = new Sema(3);
 async function fetchBackground(url: string): Promise<string | undefined> {
   await fetchSema.acquire();
   try {
-    const newTitle: unknown = await runtime.sendMessage(url);
-    // 非対応の場合などでタイトルが帰ってこないことがあり、その場合正常に終了します。
-    if (newTitle == null) {
-      return undefined;
-    }
-    // タイトルがstringではない場合プログラミングミスなので例外を投げます。
-    if (typeof newTitle !== "string") {
+    const newTitle: unknown = await runtime.sendMessage({
+      target: "background",
+      type: "getTitle",
+      url,
+    });
+    if (!BackgroundResponse.is(newTitle)) {
+      // プログラミングミスなので例外を投げます。
       throw new Error(
-        `response is not BackgroundResponse: ${JSON.stringify(newTitle)}`,
+        `newTitle !== "string": typeof newTitle is ${typeof newTitle}, newTitle: ${JSON.stringify(
+          newTitle,
+        )}`,
       );
     }
-    return newTitle;
+    return newTitle ?? undefined;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error("fetchBackground is error.", err);

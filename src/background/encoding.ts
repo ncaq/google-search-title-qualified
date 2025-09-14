@@ -1,3 +1,5 @@
+import { queryCharset, queryContentType } from "./dom-parser-client";
+
 /** この拡張機能が対応するエンコーディング一覧です。 */
 const encodings = ["UTF8", "SJIS", "EUCJP"] as const;
 /** 対応エンコードを型付けします。 */
@@ -33,15 +35,9 @@ function testEncoding(source: string): Encoding | undefined {
 /**
  * HTMLドキュメントから類推されるエンコードの手がかりを取得します。
  */
-function queryEncodingEvidence(text: string): EncodingEvidence {
-  const domParser = new DOMParser();
-  const dom = domParser.parseFromString(text, "text/html");
-  const html5Charset =
-    dom.querySelector("meta[charset]")?.getAttribute("charset") ?? undefined;
-  const html4ContentType =
-    dom
-      .querySelector('meta[http-equiv="Content-Type"]')
-      ?.getAttribute("content") ?? undefined;
+async function queryEncodingEvidence(text: string): Promise<EncodingEvidence> {
+  const html5Charset = await queryCharset(text);
+  const html4ContentType = await queryContentType(text);
   return {
     html5Charset,
     html4ContentType,
@@ -50,21 +46,23 @@ function queryEncodingEvidence(text: string): EncodingEvidence {
 
 /**
  * HTTPとHTMLの情報から文字コードの推定を行います。
- * 複数のエンコーディングが指定されていて、
- * それぞれが矛盾している場合バグだと判断してundefinedを返します。
+ * 複数のエンコーディングが検出された場合は、
+ * どれが正しいのか判断が難しいので、
+ * タイトルの文字化けが起きるリスクを避けるために`undefined`を返します。
  */
-export function detectEncoding(
+export async function detectEncoding(
   headers: Headers,
   text: string,
-): Encoding | undefined {
+): Promise<Encoding | undefined> {
   // 判定用の文字列を取得します。
   const httpContentType = headers.get("content-type") ?? "";
-  const { html5Charset, html4ContentType } = queryEncodingEvidence(text);
+  const { html5Charset, html4ContentType } = await queryEncodingEvidence(text);
   // それぞれのソースから計算したエンコーディングを取得します。
   // 判定不能だったものは除外します。
   const testedEncodings = [httpContentType, html5Charset, html4ContentType]
     .filter((e) => e != null)
-    .map((s) => testEncoding(s));
+    .map((s) => testEncoding(s))
+    .filter((e) => e != null);
   // Setを使って重複を除外します。
   const encodingsSet = new Set(testedEncodings);
   // 要素数が1の時のみ正しい結果だと判別します。

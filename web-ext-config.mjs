@@ -12,15 +12,14 @@ const dir = fs.readdirSync(__dirname);
 const ignoreFiles = dir.filter(
   (file) =>
     !(
-      ["dist", "LICENSE", "manifest.json"].includes(file) ||
+      ["asset", "dist", "LICENSE", "manifest.json"].includes(file) ||
       file.startsWith("icon")
-    )
+    ),
 );
 
 export default {
   build: {
     overwriteDest: true,
-    filename: "google-search-title-qualified.zip",
   },
   ignoreFiles,
   run: {

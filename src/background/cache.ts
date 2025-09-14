@@ -1,5 +1,6 @@
 import sub from "date-fns/sub";
 import type { Dexie } from "dexie";
+import { alarms } from "webextension-polyfill";
 import { db } from "./database";
 
 /** IndexedDBに格納するエントリ */
@@ -63,10 +64,13 @@ function clearOldCacheFloating(): void {
 }
 
 /**
- * キャッシュ削除の間隔。
+ * キャッシュ削除の間隔（分単位）。
  * 1日ごとにキャッシュ削除を試みます。
  */
-const cacheCleanupInterval = 24 * 60 * 60 * 1000;
+const cacheCleanupIntervalMinutes = 24 * 60;
+
+/** キャッシュクリーンアップ用のアラーム名 */
+const CACHE_CLEANUP_ALARM = "cache-cleanup" as const;
 
 /**
  * キャッシュ管理システムを起動する。
@@ -75,6 +79,13 @@ const cacheCleanupInterval = 24 * 60 * 60 * 1000;
 export function bootCacheManager(): void {
   // 起動時にキャッシュ削除。
   clearOldCacheFloating();
-  // 1日ごとにキャッシュ削除。
-  setInterval(clearOldCacheFloating, cacheCleanupInterval);
+  // 1日ごとにキャッシュ削除するためのアラームを設定。
+  alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === CACHE_CLEANUP_ALARM) {
+      clearOldCacheFloating();
+    }
+  });
+  alarms.create(CACHE_CLEANUP_ALARM, {
+    periodInMinutes: cacheCleanupIntervalMinutes,
+  });
 }
