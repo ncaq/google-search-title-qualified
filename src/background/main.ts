@@ -1,5 +1,4 @@
 import { bootCacheManager } from "./cache";
-import { initializeFetchAlarmListener } from "./fetch-page";
 import { onMessageListener } from "./on-message-listener";
 
 /**
@@ -7,7 +6,6 @@ import { onMessageListener } from "./on-message-listener";
  */
 function main() {
   bootCacheManager();
-  initializeFetchAlarmListener();
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) =>
     onMessageListener(message, sendResponse),
   );
