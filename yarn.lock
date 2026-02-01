@@ -574,13 +574,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chrome@npm:^0.1.9":
-  version: 0.1.9
-  resolution: "@types/chrome@npm:0.1.9"
+"@types/chrome@npm:^0.1.36":
+  version: 0.1.36
+  resolution: "@types/chrome@npm:0.1.36"
   dependencies:
     "@types/filesystem": "npm:*"
     "@types/har-format": "npm:*"
-  checksum: 10c0/0395ddd53a8ee23c97c12871ed3f686dfc48c4f980d1bb8464db349fd2048678ada69e6f83aab6858124c405c5a9830fada486cfa6f600cede72388a1daacab4
+  checksum: 10c0/afeb5fe87d743b7db2bf0fa2df7e1bec5b700614512b1de5c0b25c0b71eba54cce41d36606801fa2d1c55c984c3b4ec13736ea132a8c269e16d445bda176bb29
   languageName: node
   linkType: hard
 
@@ -644,19 +644,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.3.1":
-  version: 24.3.1
-  resolution: "@types/node@npm:24.3.1"
+"@types/node@npm:^25.1.0":
+  version: 25.1.0
+  resolution: "@types/node@npm:25.1.0"
   dependencies:
-    undici-types: "npm:~7.10.0"
-  checksum: 10c0/99b86fc32294fcd61136ca1f771026443a1e370e9f284f75e243b29299dd878e18c193deba1ce29a374932db4e30eb80826e1049b9aad02d36f5c30b94b6f928
+    undici-types: "npm:~7.16.0"
+  checksum: 10c0/5f393a127dc9565e2e152514a271455d580c7095afc51302e73ffe8aac3526b64ebacc3c10dd40c93cef81a95436ef2c6a8b522930df567a3f6b189c0eef649a
   languageName: node
   linkType: hard
 
-"@types/webextension-polyfill@npm:^0.12.3":
-  version: 0.12.3
-  resolution: "@types/webextension-polyfill@npm:0.12.3"
-  checksum: 10c0/0f0cea5ab70a3958f7eca61168b8b431288c35ee7e8f052f5b3bf6a6aa101183aa760addd4dcf408027d558731aa8a8f107e47a373bb7c347cb7cba807fe46e6
+"@types/webextension-polyfill@npm:^0.12.4":
+  version: 0.12.4
+  resolution: "@types/webextension-polyfill@npm:0.12.4"
+  checksum: 10c0/8f87295515658e6e257f3e5b86ae86d3e366f83b32512899954cdc6a01cee0a5646fa8a3802ffa42e922a7288790f03eea1b0d529f8ad1ee20b99bd689b3a5ee
   languageName: node
   linkType: hard
 
@@ -2592,10 +2592,10 @@ __metadata:
   dependencies:
     "@eslint/compat": "npm:^2.0.0"
     "@eslint/js": "npm:^9.39.2"
-    "@types/chrome": "npm:^0.1.9"
+    "@types/chrome": "npm:^0.1.36"
     "@types/encoding-japanese": "npm:^2.2.1"
-    "@types/node": "npm:^24.3.1"
-    "@types/webextension-polyfill": "npm:^0.12.3"
+    "@types/node": "npm:^25.1.0"
+    "@types/webextension-polyfill": "npm:^0.12.4"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.30.0"
     dexie: "npm:^3.2.7"
@@ -4567,10 +4567,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~7.10.0":
-  version: 7.10.0
-  resolution: "undici-types@npm:7.10.0"
-  checksum: 10c0/8b00ce50e235fe3cc601307f148b5e8fb427092ee3b23e8118ec0a5d7f68eca8cee468c8fc9f15cbb2cf2a3797945ebceb1cbd9732306a1d00e0a9b6afa0f635
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 10c0/3033e2f2b5c9f1504bdc5934646cb54e37ecaca0f9249c983f7b1fc2e87c6d18399ebb05dc7fd5419e02b2e915f734d872a65da2e3eeed1813951c427d33cc9a
   languageName: node
   linkType: hard
 
