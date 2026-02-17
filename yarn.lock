@@ -581,7 +581,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chrome@npm:^0.1.9":
+"@types/chrome@npm:^0.1.36":
   version: 0.1.36
   resolution: "@types/chrome@npm:0.1.36"
   dependencies:
@@ -651,7 +651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.3.1":
+"@types/node@npm:^24.10.13":
   version: 24.10.13
   resolution: "@types/node@npm:24.10.13"
   dependencies:
@@ -1930,7 +1930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.27.2":
+"esbuild@npm:^0.27.3":
   version: 0.27.3
   resolution: "esbuild@npm:0.27.3"
   dependencies:
@@ -2569,15 +2569,15 @@ __metadata:
   dependencies:
     "@eslint/compat": "npm:^2.0.2"
     "@eslint/js": "npm:^9.39.2"
-    "@types/chrome": "npm:^0.1.9"
+    "@types/chrome": "npm:^0.1.36"
     "@types/encoding-japanese": "npm:^2.2.1"
-    "@types/node": "npm:^24.3.1"
+    "@types/node": "npm:^24.10.13"
     "@types/webextension-polyfill": "npm:^0.12.3"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.30.0"
     dexie: "npm:^3.2.7"
     encoding-japanese: "npm:^2.2.0"
-    esbuild: "npm:^0.27.2"
+    esbuild: "npm:^0.27.3"
     eslint: "npm:^9.39.2"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-import-resolver-typescript: "npm:^4.4.4"
@@ -2589,8 +2589,8 @@ __metadata:
     prettier: "npm:^3.8.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.9.3"
-    typescript-eslint: "npm:^8.54.0"
-    web-ext: "npm:^9.2.0"
+    typescript-eslint: "npm:^8.56.0"
+    web-ext: "npm:^9.3.0"
     webextension-polyfill: "npm:^0.12.0"
   languageName: unknown
   linkType: soft
@@ -4511,7 +4511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.54.0":
+"typescript-eslint@npm:^8.56.0":
   version: 8.56.0
   resolution: "typescript-eslint@npm:8.56.0"
   dependencies:
@@ -4732,7 +4732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-ext@npm:^9.2.0":
+"web-ext@npm:^9.3.0":
   version: 9.3.0
   resolution: "web-ext@npm:9.3.0"
   dependencies:
