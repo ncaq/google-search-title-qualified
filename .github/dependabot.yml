@@ -22,3 +22,7 @@ updates:
       eslint:
         patterns:
           - "*eslint*"
+    ignore:
+      - dependency-name: "@types/node" # Node.jsのバージョンはこちらでLTSを前提にコントロールしたいため。
+        update-types:
+          - "version-update:semver-major"
