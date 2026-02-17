@@ -36,11 +36,11 @@
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
     "@eslint/js": "^9.39.2",
-    "@types/chrome": "^0.1.9",
+    "@types/chrome": "^0.1.36",
     "@types/encoding-japanese": "^2.2.1",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.10.13",
     "@types/webextension-polyfill": "^0.12.3",
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.27.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -49,8 +49,8 @@
     "prettier": "^3.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0",
-    "web-ext": "^9.2.0"
+    "typescript-eslint": "^8.56.0",
+    "web-ext": "^9.3.0"
   },
   "packageManager": "yarn@4.12.0+sha512.f45ab632439a67f8bc759bf32ead036a1f413287b9042726b7cc4818b7b49e14e9423ba49b18f9e06ea4941c1ad062385b1d8760a8d5091a1a31e5f6219afca8",
   "engines": {
