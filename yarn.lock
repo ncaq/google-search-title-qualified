@@ -660,10 +660,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webextension-polyfill@npm:^0.12.3":
-  version: 0.12.3
-  resolution: "@types/webextension-polyfill@npm:0.12.3"
-  checksum: 10c0/0f0cea5ab70a3958f7eca61168b8b431288c35ee7e8f052f5b3bf6a6aa101183aa760addd4dcf408027d558731aa8a8f107e47a373bb7c347cb7cba807fe46e6
+"@types/webextension-polyfill@npm:^0.12.4":
+  version: 0.12.4
+  resolution: "@types/webextension-polyfill@npm:0.12.4"
+  checksum: 10c0/8f87295515658e6e257f3e5b86ae86d3e366f83b32512899954cdc6a01cee0a5646fa8a3802ffa42e922a7288790f03eea1b0d529f8ad1ee20b99bd689b3a5ee
   languageName: node
   linkType: hard
 
@@ -2572,7 +2572,7 @@ __metadata:
     "@types/chrome": "npm:^0.1.36"
     "@types/encoding-japanese": "npm:^2.2.1"
     "@types/node": "npm:^24.10.13"
-    "@types/webextension-polyfill": "npm:^0.12.3"
+    "@types/webextension-polyfill": "npm:^0.12.4"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.30.0"
     dexie: "npm:^3.2.7"
