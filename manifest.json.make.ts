@@ -20,8 +20,10 @@ async function selectGoogleSearchUrls(): Promise<string[]> {
 /**
  * Firefox用に拡張したManifestV3型。
  */
-interface FirefoxManifestV3
-  extends Omit<chrome.runtime.ManifestV3, "background"> {
+interface FirefoxManifestV3 extends Omit<
+  chrome.runtime.ManifestV3,
+  "background"
+> {
   browser_specific_settings: {
     gecko: {
       id: string;
