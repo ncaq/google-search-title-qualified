@@ -581,13 +581,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chrome@npm:^0.1.36":
-  version: 0.1.36
-  resolution: "@types/chrome@npm:0.1.36"
+"@types/chrome@npm:^0.1.37":
+  version: 0.1.37
+  resolution: "@types/chrome@npm:0.1.37"
   dependencies:
     "@types/filesystem": "npm:*"
     "@types/har-format": "npm:*"
-  checksum: 10c0/afeb5fe87d743b7db2bf0fa2df7e1bec5b700614512b1de5c0b25c0b71eba54cce41d36606801fa2d1c55c984c3b4ec13736ea132a8c269e16d445bda176bb29
+  checksum: 10c0/7de8f5be134035d4b764afd1f443fe842ad26975dbac914e977f94760be53bee3958ac2aed69d206ad8f18d8204b46075da78bd1ca22dab148193b6feb62e06f
   languageName: node
   linkType: hard
 
@@ -651,19 +651,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^24.10.13":
-  version: 24.10.13
-  resolution: "@types/node@npm:24.10.13"
+"@types/node@npm:^24.10.15":
+  version: 24.10.15
+  resolution: "@types/node@npm:24.10.15"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/4ff0b9b060b5477c0fec5b11a176f294be588104ab546295db65b17a92ba0a6077b52ad92dd3c0d2154198c7f9d0021e6c1d42b00c9ac7ebfd85632afbcc48a4
+  checksum: 10c0/5c688efe22b660fa1f21a4c8b1b9c9deae7db7f174e1c4c82799e6395ebfcdf5b97dac137814616be167e636ae77a4ffa5d9e871cbe6796811abea3628ff6dda
   languageName: node
   linkType: hard
 
-"@types/webextension-polyfill@npm:^0.12.3":
-  version: 0.12.3
-  resolution: "@types/webextension-polyfill@npm:0.12.3"
-  checksum: 10c0/0f0cea5ab70a3958f7eca61168b8b431288c35ee7e8f052f5b3bf6a6aa101183aa760addd4dcf408027d558731aa8a8f107e47a373bb7c347cb7cba807fe46e6
+"@types/webextension-polyfill@npm:^0.12.5":
+  version: 0.12.5
+  resolution: "@types/webextension-polyfill@npm:0.12.5"
+  checksum: 10c0/019727139514bc39d25d9d94be8a24ca8a57f49954c3e546a54cc0df213b3d356391bf45917c43084370da462b4c903bbaa26a33845458ca868b8726961113e1
   languageName: node
   linkType: hard
 
@@ -2569,10 +2569,10 @@ __metadata:
   dependencies:
     "@eslint/compat": "npm:^2.0.2"
     "@eslint/js": "npm:^9.39.2"
-    "@types/chrome": "npm:^0.1.36"
+    "@types/chrome": "npm:^0.1.37"
     "@types/encoding-japanese": "npm:^2.2.1"
-    "@types/node": "npm:^24.10.13"
-    "@types/webextension-polyfill": "npm:^0.12.3"
+    "@types/node": "npm:^24.10.15"
+    "@types/webextension-polyfill": "npm:^0.12.5"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.30.0"
     dexie: "npm:^3.2.7"
