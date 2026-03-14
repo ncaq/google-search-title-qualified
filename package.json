@@ -36,10 +36,10 @@
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
     "@eslint/js": "^9.39.2",
-    "@types/chrome": "^0.1.36",
+    "@types/chrome": "^0.1.37",
     "@types/encoding-japanese": "^2.2.1",
-    "@types/node": "^24.10.13",
-    "@types/webextension-polyfill": "^0.12.3",
+    "@types/node": "^24.12.0",
+    "@types/webextension-polyfill": "^0.12.5",
     "esbuild": "^0.27.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
