@@ -1818,10 +1818,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dexie@npm:^4.4.5":
-  version: 4.4.5
-  resolution: "dexie@npm:4.4.5"
-  checksum: 10c0/a88439b82842b27929fb5e883944ff9a739f1b713382b1eb09745166cad41ce83ca443aa850ae185e9f75569f643aa8efb4126e52971db2b8c9ca27eab1afce2
+"dexie@npm:^4.4.7":
+  version: 4.4.7
+  resolution: "dexie@npm:4.4.7"
+  checksum: 10c0/5de6b45d928d61f8fd77dbb92ff206928007392c92c5500486655d2bed918eefb2c00ec07a932488bc09948463f91e7679607b241e2cd51930721a6e294da06c
   languageName: node
   linkType: hard
 
@@ -2758,7 +2758,7 @@ __metadata:
     "@types/webextension-polyfill": "npm:^0.12.3"
     async-sema: "npm:^3.1.1"
     date-fns: "npm:^2.30.0"
-    dexie: "npm:^4.4.5"
+    dexie: "npm:^4.4.7"
     encoding-japanese: "npm:^2.2.0"
     esbuild: "npm:^0.28.0"
     eslint: "npm:^10.1.0"
